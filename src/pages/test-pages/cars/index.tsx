@@ -1,3 +1,5 @@
-export default function FirstPost() {
-  return <h1>Cars List</h1>;
-}
+import React from 'react'
+
+const FirstPost = () => <h1>Cars List</h1>
+
+export default FirstPost

@@ -1,10 +1,12 @@
-import { Router, useRouter } from "next/router"
+import React from 'react'
+import { useRouter } from 'next/router'
 
-export default function Car() {
+const Car = () => {
+  const router = useRouter()
 
-		const router = useRouter()
+  const { id } = router.query
 
-		const { id } = router.query
-
-		return <h1>Hello {id}</h1>
+  return <h1>Hello {id}</h1>
 }
+
+export default Car
