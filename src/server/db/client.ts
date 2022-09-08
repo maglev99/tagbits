@@ -8,8 +8,7 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export const prisma =
+ const prisma =
   global.prisma ||
   new PrismaClient({
     log:
@@ -19,3 +18,5 @@ export const prisma =
 if (env.NODE_ENV !== 'production') {
   global.prisma = prisma
 }
+
+export default prisma

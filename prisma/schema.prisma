@@ -6,10 +6,22 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
 model Example {
     id String @id @default(cuid())
+}
+
+model Link {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String
+  url         String
+  imageUrl    String
+  category    String
+  users       String
 }
