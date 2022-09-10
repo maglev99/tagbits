@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# dev only scripts
+/dev_only
+
 # database
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
@@ -38,3 +41,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+

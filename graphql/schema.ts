@@ -12,7 +12,18 @@ const typeDefs = gql`
   }
 
   type Query {
-    links: [Link]!
+    tokens: [Token]
+    updateTokenList: String
+  }
+
+  type Token {
+    pk: String
+    timestamp: String
+    tags: [Tag]
+  }
+
+  type Tag {
+    name: String
   }
 `
 export default typeDefs

@@ -1,43 +1,44 @@
-import prisma from '../src/server/db/client'
+// import prisma from '../src/server/db/client'
 // import { Context } from './context'
 
-// console.log('constext in resolver prisma link', context.prisma)
+import { TokenQuery } from '../src/queries'
+import apolloClient from '../src/lib/apollo'
+
+const UpdateTokenQuery = async () => {
+  // console.log('updating token query')
+
+  // const { data } = await useQuery(TokenQuery, {
+  //   context: { clientName: 'objkt-api' },
+  // })
+
+  const { data } = await apolloClient.query({
+    query: TokenQuery,
+    context: { clientName: 'objkt-api' },
+  })
+
+  console.log('token data', data)
+
+  return data
+}
 
 const resolvers = {
   Query: {
+    // ISSUE: context currently not working as cannot read prisma in context.prisma
     // eslint-disable-next-line @typescript-eslint/return-await
     // links: async (context: Context) => await context.prisma.link.findMany(),
-    links: async () => prisma.link.findMany(),
-    // links: async (_parent, _args, context) => await context.prisma.link.findMany(),
 
-    // links: () => [
-    //   {
-    //     category: 'Open Source',
-    //     description: 'Fullstack React framework',
-    //     id: '8a9020b2-363b-4a4f-ad26-d6d55b51bqes',
-    //     imageUrl: 'https://nextjs.org/static/twitter-cards/home.jpg',
-    //     title: 'Next.js',
-    //     url: 'https://nextjs.org',
-    //   },
-    //   {
-    //     category: 'Open Source',
-    //     description: 'Next Generation ORM for TypeScript and JavaScript',
-    //     id: '2a3121b2-363b-4a4f-ad26-d6c35b41bade',
-    //     imageUrl: 'https://www.prisma.io/images/og-image.png',
+    // links: async () => prisma.link.findMany(),
 
-    //     title: 'Prisma',
-    //     url: 'https://prisma.io',
-    //   },
-    //   {
-    //     category: 'Open Source',
-    //     description: 'Utility-fist css framework',
-    //     id: '6a9122b2-363b-4a4f-ad26-d6c55b51baed',
-    //     imageUrl:
-    //       'https://tailwindcss.com/_next/static/media/twitter-large-card.85c0ff9e455da585949ff0aa50981857.jpg',
-    //     title: 'TailwindCSS',
-    //     url: 'https://tailwindcss.com',
-    //   },
-    // ],
+    tokens: async () => UpdateTokenQuery(),
+
+    updateTokenList: async () => {
+      const data = await UpdateTokenQuery()
+      console.log("data", data)
+      return data.token[0].pk
+
+      // const result = "123"
+      // return result
+    },
   },
 }
 
