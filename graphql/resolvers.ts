@@ -1,4 +1,4 @@
-// import prisma from '../src/server/db/client'
+import prisma from '../src/server/db/client'
 // import { Context } from './context'
 
 import { TokenQuery } from '../src/queries'
@@ -14,6 +14,11 @@ const UpdateTokenQuery = async () => {
   const { data } = await apolloClient.query({
     query: TokenQuery,
     context: { clientName: 'objkt-api' },
+    variables: {
+      pk: 0,
+      gte: '2022-09-06T00:00:29+00:00',
+      lt: '2022-09-06T00:10:00+00:00',
+    },
   })
 
   console.log('token data', data)
@@ -33,11 +38,19 @@ const resolvers = {
 
     updateTokenList: async () => {
       const data = await UpdateTokenQuery()
-      console.log("data", data)
+      console.log('data', data)
       return data.token[0].pk
+    },
 
-      // const result = "123"
-      // return result
+    fetchTokensRanked: async () => {
+      console.log('calling fetch token ranked query')
+      const data = (await prisma.token.findMany()).map((token) => ({
+        id: token.id,
+        pk: token.pk.toString(), // convert pk to string since GraphQL does not support BigInt (type Token in schema.ts) 
+        timestamp: token.timestamp,
+        tags: token.tags
+      }))
+      return data
     },
   },
 }

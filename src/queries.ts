@@ -14,18 +14,17 @@ const AllLinksQuery = gql`
 `
 
 export const TokenQuery = gql`
-  query TokenQuery($pk: bigint = 0) {
+  query TokenQuery(
+    $pk: bigint
+    $gte: timestamptz
+    $lt: timestamptz
+  ) {
     token(
       where: {
         pk: { _gt: $pk }
-        timestamp: {
-          _is_null: false
-          _gte: "2022-09-06T00:00:00+00:00"
-          _lt: "2022-09-06T00:10:00+00:00"
-        }
+        timestamp: { _is_null: false, _gte: $gte, _lt: $lt }
       }
       order_by: { timestamp: asc }
-      limit: 2
     ) {
       pk
       timestamp
@@ -36,6 +35,12 @@ export const TokenQuery = gql`
       }
     }
   }
+`
+
+export const TokenRankQuery = gql`
+	query {
+		fetchTokensRanked
+	}
 `
 
 export const UPDATE_TOKEN_LIST = gql`

@@ -10,22 +10,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// model Example {
-//     id String @id @default(cuid())
-// }
-
-// model Link {
-//     id          String   @id @default(uuid())
-//     createdAt   DateTime @default(now())
-//     updatedAt   DateTime @updatedAt
-//     title       String
-//     description String
-//     url         String
-//     imageUrl    String
-//     category    String
-//     users       String
-// }
-
 model Token {
     id        String   @id @default(uuid())
     pk        BigInt
@@ -35,24 +19,10 @@ model Token {
     @@index(pk)
 }
 
-// model Tag {
-//     id      String  @id @default(uuid())
-//     name    String
-//     Token   Token?  @relation(fields: [tokenId], references: [id])
-//     tokenId String?
-// }
+model TagRank {
+    id    String @id @default(uuid())
+    tag   String
+    count Int
+}
 
-//   type Query {
-//     links: [Link]!
-//     tokens: [Token]
-//   }
 
-//   type Token {
-//     pk: BigInt
-//     timestamp: Date
-//     tags: [Tag]
-//   }
-
-//   type Tag {
-//     name: String
-//   }
