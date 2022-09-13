@@ -51,14 +51,14 @@ const indexObjectValidator = z.object({
 
 type IndexObject = z.infer<typeof indexObjectValidator>
 
-const tokenValidator = z.object({
-  id: z.string(),
-  pk: z.bigint(),
-  timestamp: z.date(),
-  tags: z.array(tagValidator),
-})
+// const tokenValidator = z.object({
+//   id: z.string(),
+//   pk: z.bigint(),
+//   timestamp: z.date(),
+//   tags: z.array(tagValidator),
+// })
 
-type Token = z.infer<typeof tokenValidator>
+// type Token = z.infer<typeof tokenValidator>
 
 const fetchTokens = async (
   pkIndex: IndexObject,
@@ -66,8 +66,9 @@ const fetchTokens = async (
   fetchComplete: BoolObject
 ) => {
   while (!fetchComplete.value) {
-    const timestampGte = '2022-09-06T00:00:29+00:00'
-    const timestampLt = '2022-09-06T00:10:00+00:00'
+    const timestampGte = '2022-09-06T00:00:00+00:00'
+    const timestampLt = '2022-09-06T01:00:00+00:00'
+
     // eslint-disable-next-line no-await-in-loop
     const data = await UpdateTokenQuery(
       Number(pkIndex.value),
@@ -76,7 +77,7 @@ const fetchTokens = async (
     )
 
     const tokenCount = data.token.length
-    console.log('token count', tokenCount)
+    // console.log('token count', tokenCount)
 
     if (tokenCount < 1) {
       console.log('all tokens in query range fetched')
@@ -84,21 +85,27 @@ const fetchTokens = async (
       fetchComplete.value = true
     }
 
-    data.token.forEach(async (token: Token) => {
-      const tagsArray = token.tags.map((tagObject: Tag) => tagObject.tag.name)
+    const createTokenPromises = []
 
-			console.log('token pk: ', token.pk)
+    // eslint-disable-next-line no-restricted-syntax
+    for (const token of data.token) {
+      const tagsArray = token.tags.map((tagObject: Tag) => tagObject.tag.name)
 
       pkList.push(token.pk)
 
-      await prisma.token.create({
-        data: {
-          pk: token.pk,
-          timestamp: token.timestamp,
-          tags: tagsArray,
-        },
-      })
-    })
+      createTokenPromises.push(
+        prisma.token.create({
+          data: {
+            pk: token.pk,
+            timestamp: token.timestamp,
+            tags: tagsArray,
+          },
+        })
+      )
+    }
+
+    // eslint-disable-next-line no-await-in-loop
+    await Promise.all(createTokenPromises)
 
     const pkListLength = pkList.length
 
@@ -117,12 +124,8 @@ const RunTokenFetch = async () => {
   let pkIndex: IndexObject = { value: BigInt(0) }
   const pkList: bigint[] = []
 
-  // console.log('pk index start', pkIndex.value)
-
   // eslint-disable-next-line prefer-const
   let fetchComplete: BoolObject = { value: false }
-
-  // console.log('fetch complete', fetchComplete)
 
   try {
     await prisma.token.deleteMany()
@@ -130,8 +133,6 @@ const RunTokenFetch = async () => {
     await fetchTokens(pkIndex, pkList, fetchComplete)
 
     console.log('tokens fetched')
-    // console.log('pk index fetched', pkIndex.value)
-    // console.log('fetch complete', fetchComplete.value)
     console.log('token pk list', pkList)
 
     const pkListLength = pkList.length

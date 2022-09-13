@@ -35,8 +35,9 @@ const RunTagRank = async () => {
     await prisma.tagRank.deleteMany()
 
     const data: any = await RankTagQuery()
-    console.log('data', data.fetchTagsRanked[0])
+    console.log('data', data.fetchTagsRanked)
 
+    // not using promise.all here since testing reveals using promise.all is slower in this case
     data.fetchTagsRanked.forEach(async (tag: TagRank) => {
       await prisma.tagRank.create({
         data: {
@@ -45,6 +46,7 @@ const RunTagRank = async () => {
         },
       })
     })
+
   } catch (error) {
     console.log('Error: ', error)
   }
@@ -53,3 +55,4 @@ const RunTagRank = async () => {
 export default RunTagRank
 
 export {}
+
