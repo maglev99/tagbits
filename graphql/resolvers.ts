@@ -1,3 +1,4 @@
+// import { TagRank } from '@prisma/client'
 import prisma from '../src/server/db/client'
 // import { Context } from './context'
 
@@ -42,16 +43,28 @@ const resolvers = {
       return data.token[0].pk
     },
 
-    fetchTokensRanked: async () => {
-      console.log('calling fetch token ranked query')
-      const data = (await prisma.token.findMany()).map((token) => ({
-        id: token.id,
-        pk: token.pk.toString(), // convert pk to string since GraphQL does not support BigInt (type Token in schema.ts) 
-        timestamp: token.timestamp,
-        tags: token.tags
+    fetchTagsRanked: async () => {
+      const rawData: any = await prisma.$queryRaw`
+      SELECT UNNEST(tags) as name, COUNT(*) as count FROM "Token"
+      GROUP BY name
+      ORDER BY count DESC, name
+      `
+      // convert rawData type to match gql schema
+      const data = rawData.map((tag: any) => ({
+        name: tag.name,
+        count: Number(tag.count.toString())
       }))
       return data
     },
+
+    // fetchTokensRanked: async () => {
+    //   console.log('calling fetch token ranked query')
+    //   const data = (await prisma.token.findMany()).map((token) => ({
+    //     name: token.pk.toString(), // convert pk to string since GraphQL does not support BigInt (type Token in schema.ts)
+    //     count: 0
+    //   }))
+    //   return data
+    // },
   },
 }
 

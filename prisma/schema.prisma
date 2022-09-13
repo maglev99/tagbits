@@ -21,7 +21,7 @@ model Token {
 
 model TagRank {
     id    String @id @default(uuid())
-    tag   String
+    name  String
     count Int
 }
 

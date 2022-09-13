@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "dbcmd": "ts-node dev_only/db-commands.ts"
+    "dbcmd": "ts-node dev_only/db-commands-test.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",

@@ -4,7 +4,7 @@ const typeDefs = gql`
   type Query {
     tokens: [Token]
     updateTokenList: String
-    fetchTokensRanked: [Token]
+    fetchTagsRanked: [TagRank]
   }
 
   type Token {
@@ -15,6 +15,11 @@ const typeDefs = gql`
 
   type Tag {
     name: String
+  }
+
+  type TagRank {
+    name:  String
+    count: Int
   }
 `
 export default typeDefs
