@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "dbcmd": "ts-node dev_only/db-commands-test.ts"
+    "dbcmd": "ts-node dev_only/db-commands-test.ts",
+    "dbdel": "ts-node dev_only/db-deletes.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",

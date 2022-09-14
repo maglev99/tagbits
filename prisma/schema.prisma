@@ -20,9 +20,29 @@ model Token {
 }
 
 model TagRank {
-    id    String @id @default(uuid())
-    name  String
-    count Int
+    id            String       @id @default(uuid())
+    name          String
+    count         Int
+    TagRankList   TagRankList @relation(fields: [tagRankListId], references: [id])
+    tagRankListId String
+
+    @@index(tagRankListId)
 }
 
+model TagRankList {
+    id    String           @id @default(uuid())
+    type  Type_TagRankList
+    start DateTime
+    end   DateTime
+    list  TagRank[]
 
+    @@unique([start, end])
+    @@index([start, end])
+}
+
+enum Type_TagRankList {
+    HOUR
+    DAY
+    WEEK
+    YEAR
+}

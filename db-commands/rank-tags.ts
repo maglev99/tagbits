@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Type_TagRankList } from '@prisma/client'
 
 // added for runnning fetch operation without using graphql
 import fetch from 'cross-fetch'
@@ -33,6 +33,18 @@ type TagRank = z.infer<typeof tagRankValidator>
 const RunTagRank = async () => {
   try {
     await prisma.tagRank.deleteMany()
+    await prisma.tagRankList.deleteMany()
+
+    const start = '2022-09-06T00:00:00+00:00'
+    const end = '2022-09-06T01:00:00+00:00'
+
+    const tagRankList = await prisma.tagRankList.create({
+      data: {
+        type: Type_TagRankList.HOUR,
+        start,
+        end,
+      },
+    })
 
     const data: any = await RankTagQuery()
     console.log('data', data.fetchTagsRanked)
@@ -43,10 +55,10 @@ const RunTagRank = async () => {
         data: {
           name: tag.name,
           count: tag.count,
+          tagRankListId: tagRankList.id,
         },
       })
     })
-
   } catch (error) {
     console.log('Error: ', error)
   }
@@ -55,4 +67,3 @@ const RunTagRank = async () => {
 export default RunTagRank
 
 export {}
-
