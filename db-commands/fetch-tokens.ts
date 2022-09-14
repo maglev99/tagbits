@@ -5,10 +5,8 @@ import fetch from 'cross-fetch'
 
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client'
 
-// import { timeStamp } from 'console'
 import z from 'zod'
 import { TokenQuery } from '../src/queries'
-// import apolloClient from '../src/lib/apollo'
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
@@ -63,11 +61,13 @@ type IndexObject = z.infer<typeof indexObjectValidator>
 const fetchTokens = async (
   pkIndex: IndexObject,
   pkList: bigint[],
-  fetchComplete: BoolObject
+  fetchComplete: BoolObject,
+  start: string,
+  end: string
 ) => {
   while (!fetchComplete.value) {
-    const timestampGte = '2022-09-06T00:00:00+00:00'
-    const timestampLt = '2022-09-06T01:00:00+00:00'
+    const timestampGte = start 
+    const timestampLt = end 
 
     // eslint-disable-next-line no-await-in-loop
     const data = await UpdateTokenQuery(
@@ -118,7 +118,7 @@ const fetchTokens = async (
   }
 }
 
-const RunTokenFetch = async () => {
+const RunTokenFetch = async (start: string, end: string) => {
   // index for tracking last token of each fetch so will fetch next batch if there are more tokens beyond the initial query return
   // eslint-disable-next-line prefer-const
   let pkIndex: IndexObject = { value: BigInt(0) }
@@ -130,7 +130,7 @@ const RunTokenFetch = async () => {
   try {
     await prisma.token.deleteMany()
 
-    await fetchTokens(pkIndex, pkList, fetchComplete)
+    await fetchTokens(pkIndex, pkList, fetchComplete, start, end)
 
     console.log('tokens fetched')
     console.log('token pk list', pkList)

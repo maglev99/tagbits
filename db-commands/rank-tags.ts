@@ -30,17 +30,14 @@ const tagRankValidator = z.object({
 
 type TagRank = z.infer<typeof tagRankValidator>
 
-const RunTagRank = async () => {
+const RunTagRank = async (start: string, end: string, type: Type_TagRankList) => {
   try {
     await prisma.tagRank.deleteMany()
     await prisma.tagRankList.deleteMany()
 
-    const start = '2022-09-06T00:00:00+00:00'
-    const end = '2022-09-06T01:00:00+00:00'
-
     const tagRankList = await prisma.tagRankList.create({
       data: {
-        type: Type_TagRankList.HOUR,
+        type,
         start,
         end,
       },
