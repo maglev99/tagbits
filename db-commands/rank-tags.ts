@@ -70,4 +70,3 @@ const RunTagRank = async (
 
 export default RunTagRank
 
-export {}
