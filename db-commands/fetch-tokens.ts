@@ -22,6 +22,7 @@ const UpdateTokenQuery = async (
     query: TokenQuery,
     context: { clientName: 'objkt-api' },
     variables: { pk, gte: timestamp_gte, lt: timestamp_lt },
+    fetchPolicy: "no-cache" 
   })
 
   return data
@@ -128,7 +129,7 @@ const RunTokenFetch = async (start: string, end: string) => {
   let fetchComplete: BoolObject = { value: false }
 
   try {
-    await prisma.token.deleteMany()
+    // await prisma.token.deleteMany()
 
     await fetchTokens(pkIndex, pkList, fetchComplete, start, end)
 

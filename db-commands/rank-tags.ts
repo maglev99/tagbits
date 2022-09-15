@@ -18,6 +18,7 @@ const prisma = new PrismaClient()
 const RankTagQuery = async () => {
   const { data } = await apolloClient.query({
     query: TagRankQuery,
+    fetchPolicy: "no-cache" 
   })
 
   return data
@@ -30,10 +31,16 @@ const tagRankValidator = z.object({
 
 type TagRank = z.infer<typeof tagRankValidator>
 
-const RunTagRank = async (start: string, end: string, type: Type_TagRankList) => {
+const RunTagRank = async (
+  start: string,
+  end: string,
+  type: Type_TagRankList
+) => {
   try {
-    await prisma.tagRank.deleteMany()
-    await prisma.tagRankList.deleteMany()
+    // await prisma.tagRank.deleteMany()
+    // await prisma.tagRankList.deleteMany()
+
+    console.log(`Start: ${start}, End: ${end}`)
 
     const tagRankList = await prisma.tagRankList.create({
       data: {
