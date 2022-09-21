@@ -2,16 +2,19 @@
 import React from 'react'
 import '../styles/globals.css'
 import type { AppType } from 'next/dist/shared/lib/utils'
-// import Car from './test-pages/cars/[id]'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-import { ApolloProvider } from '@apollo/client'
-import apolloClient from '../lib/apollo'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+// Create a client
+const queryClient = new QueryClient()
 
 // eslint-disable-next-line react/prop-types
 const MyApp: AppType = ({ Component, pageProps }) => (
-  <ApolloProvider client={apolloClient}>
+  <QueryClientProvider client={queryClient}>
     <Component {...pageProps} />
-  </ApolloProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 )
 
 export default MyApp
