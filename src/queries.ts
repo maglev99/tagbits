@@ -1,51 +1,61 @@
 import gql from 'graphql-tag'
 
-const AllLinksQuery = gql`
+const TEST_QUERY = gql`
   query {
-    links {
-      id
-      title
-      url
-      description
-      imageUrl
-      category
-    }
+    testQuery
   }
 `
 
-export const TokenQuery = gql`
-  query TokenQuery($pk: bigint, $gte: timestamptz, $lt: timestamptz) {
-    token(
-      where: {
-        pk: { _gt: $pk }
-        timestamp: { _is_null: false, _gte: $gte, _lt: $lt }
-      }
-      order_by: { timestamp: asc, pk: asc }
-    ) {
-      pk
-      timestamp
-      tags {
-        tag {
-          name
-        }
-      }
-    }
-  }
-`
+export default TEST_QUERY
 
-export const TagRankQuery = gql`
-  query {
-    fetchTagsRanked {
-      name
-      count
-    }
-  }
-`
 
-export const UPDATE_TOKEN_LIST = gql`
-  query {
-    updateTokenList
-  }
-`
+// const AllLinksQuery = gql`
+//   query {
+//     links {
+//       id
+//       title
+//       url
+//       description
+//       imageUrl
+//       category
+//     }
+//   }
+// `
 
-export default AllLinksQuery
+
+
+// export const TokenQuery = gql`
+//   query TokenQuery($pk: bigint, $gte: timestamptz, $lt: timestamptz) {
+//     token(
+//       where: {
+//         pk: { _gt: $pk }
+//         timestamp: { _is_null: false, _gte: $gte, _lt: $lt }
+//       }
+//       order_by: { timestamp: asc, pk: asc }
+//     ) {
+//       pk
+//       timestamp
+//       tags {
+//         tag {
+//           name
+//         }
+//       }
+//     }
+//   }
+// `
+
+// export const TagRankQuery = gql`
+//   query {
+//     fetchTagsRanked {
+//       name
+//       count
+//     }
+//   }
+// `
+
+// export const UPDATE_TOKEN_LIST = gql`
+//   query {
+//     updateTokenList
+//   }
+// `
+

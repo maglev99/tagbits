@@ -2,24 +2,7 @@ import gql from 'graphql-tag'
 
 const typeDefs = gql`
   type Query {
-    tokens: [Token]
-    updateTokenList: String
-    fetchTagsRanked: [TagRank]
-  }
-
-  type Token {
-    pk: String
-    timestamp: String
-    tags: [Tag]
-  }
-
-  type Tag {
-    name: String
-  }
-
-  type TagRank {
-    name:  String
-    count: Int
+    testQuery: String
   }
 `
 export default typeDefs

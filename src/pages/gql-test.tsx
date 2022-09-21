@@ -3,26 +3,28 @@ import Link from 'next/link'
 import Head from 'next/head'
 
 // import { useQuery } from '@tanstack/react-query'
-import { gql } from 'graphql-request'
+// import { gql } from 'graphql-request'
 
 import useGQLQuery from '../../graphql/useGQLQuery'
 
-const GET_POKEMON = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      next
-      previous
-      status
-      message
-      results {
-        url
-        name
-        image
-      }
-    }
-  }
-`
+import TEST_QUERY from '../queries'
+
+// const GET_POKEMON = gql`
+//   query pokemons($limit: Int, $offset: Int) {
+//     pokemons(limit: $limit, offset: $offset) {
+//       count
+//       next
+//       previous
+//       status
+//       message
+//       results {
+//         url
+//         name
+//         image
+//       }
+//     }
+//   }
+// `
 
 const Nav = () => (
   <>
@@ -36,11 +38,7 @@ const Nav = () => (
 )
 
 const Data = () => {
-  const { status, data, error, isFetching } = useGQLQuery(
-    ['pokemons'],
-    GET_POKEMON,
-    {limit: 10, offset: 0}
-  )
+  const { status, data, error } = useGQLQuery(['testQuery'], TEST_QUERY, {})
 
   if (status === 'loading') {
     return <h1>Loading ...</h1>
@@ -55,12 +53,7 @@ const Data = () => {
     return <h1>An unexpected error occured</h1>
   }
 
-  return (
-    <>
-      <h1>{data.pokemons.results[0].name}</h1>
-      <div>{isFetching ? 'Background Updating...' : ' '}</div>
-    </>
-  )
+  return <h1>{data.testQuery}</h1>
 }
 
 const Main = () => (
