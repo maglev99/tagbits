@@ -49,14 +49,14 @@ const Data = () => {
   }
 
   return (
-    <div className='flex items justify-center mt-10'>
+    <div className="flex items justify-center mt-10">
       <table>
         <tr>
           <th className="text-start">Tag Name</th>
           <th className="text-start">Count</th>
         </tr>
         {data.getLatestHourlyTagRankList.map((item: TagRank) => (
-          <tr key={item.name} >
+          <tr key={item.name}>
             <td>{item.name}</td>
             <td>{item.count}</td>
           </tr>
@@ -72,7 +72,7 @@ const Main = () => (
       <title>GQL Test</title>
     </Head>
     <Nav />
-    <h1 className="flex items justify-center mt-2 text-2xl">Query Data</h1>
+    <h1 className="flex items justify-center mt-2aa text-2xl">Query Data</h1>
     <Data />
   </>
 )
