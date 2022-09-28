@@ -1,0 +1,13 @@
+/* dotgothic16-regular - latin */
+@font-face {
+  font-family: 'DotGothic16';
+  font-style: normal;
+  font-weight: 400;
+  src: url('dotgothic16-v15-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('dotgothic16-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('dotgothic16-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('dotgothic16-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('dotgothic16-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('dotgothic16-v15-latin-regular.svg#DotGothic16') format('svg'); /* Legacy iOS */
+}

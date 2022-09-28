@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* import custom fonts from fonts folder here */
+@import "../fonts/font.css"
+
