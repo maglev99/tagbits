@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+
+import { io } from 'socket.io-client'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import z from 'zod'
 import useGQLQuery from '../../graphql/useGQLQuery'
@@ -14,6 +18,10 @@ const tagRankValidator = z.object({
 })
 
 type TagRank = z.infer<typeof tagRankValidator>
+
+let socket: any
+
+const serverURL: string = process.env.NEXT_PUBLIC_WS_SERVER_URL ?? ''
 
 const Nav = () => (
   <>
@@ -66,15 +74,48 @@ const Data = () => {
   )
 }
 
-const Main = () => (
-  <>
-    <Head>
-      <title>GQL Test</title>
-    </Head>
-    <Nav />
-    <h1 className="flex items justify-center mt-2aa text-2xl">Query Data</h1>
-    <Data />
-  </>
-)
+const Main = () => {
+  // Get QueryClient from the context
+  const queryClient = useQueryClient()
+
+  // Initialize Websocket
+  const socketInitializer = async () => {
+    socket = io(serverURL, {
+      reconnectionDelay: 1000,
+      reconnection: true,
+      transports: ['websocket'],
+      agent: false,
+      upgrade: false,
+      rejectUnauthorized: false,
+    })
+
+    socket.on('connect', () => {
+      console.log('connected')
+    })
+
+    socket.on('refetch', (data: string) => {
+      console.log('refetch: ', data)
+      if (data === 'hourly_tagranklist') {
+        queryClient.invalidateQueries(['latest_hourly_tagranklist'])
+        console.log('refetched query')
+      }
+    })
+  }
+
+  useEffect(() => {
+    socketInitializer()
+  }, [])
+
+  return (
+    <>
+      <Head>
+        <title>GQL Test</title>
+      </Head>
+      <Nav />
+      <h1 className="flex items justify-center mt-2aa text-2xl">Query Data</h1>
+      <Data />
+    </>
+  )
+}
 
 export default Main
