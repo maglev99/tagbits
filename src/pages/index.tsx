@@ -16,6 +16,7 @@ import { GET_LATEST_HOURLY_TAGRANKLIST } from '../queries'
 
 // Image Imports
 import TagbitsLogo from './index-images/Tagbits_Logo.png'
+import City from './index-images/City_Bkg.png'
 
 const tagRankValidator = z.object({
   name: z.string(),
@@ -28,14 +29,23 @@ let socket: any
 
 const serverURL: string = process.env.NEXT_PUBLIC_WS_SERVER_URL ?? ''
 
+const mainFont = 'font-dotGothic text-tb-text antialiased font-normal'
+
+// style for centering elements horizontally with max width
+const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
+// const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
+
 const Nav = () => (
-  <div className="sticky top-0 pointer-events-none flex items justify-start pt-4 ml-4 text-lg">
+  <div className="z-10 sticky top-0 pointer-events-none flex items justify-start pt-4 ml-4 text-lg">
     <Link href="/">
-      <Image
-        src={TagbitsLogo}
-        alt="Logo"
-        className="pointer-events-auto cursor-pointer"
-      />
+      {/* use button to wrap Image to avoid nextjs link and a tag errors */}
+      <button type="button">
+        <Image
+          src={TagbitsLogo}
+          alt="Logo"
+          className="pointer-events-auto cursor-pointer"
+        />
+      </button>
     </Link>
   </div>
 )
@@ -47,7 +57,7 @@ const Data = () => {
     {}
   )
 
-  const style = 'flex items justify-center mt-10 text-2xl'
+  const style = `flex items justify-center mt-10 text-2xl ${mainFont}`
 
   if (status === 'loading') {
     return <h1 className={style}>Loading ...</h1>
@@ -63,22 +73,57 @@ const Data = () => {
   }
 
   return (
-    <div className="flex items justify-center mt-10">
-      <table>
-        <tr>
-          <th className="text-start">Tag Name</th>
-          <th className="text-start">Count</th>
-        </tr>
-        {data.getLatestHourlyTagRankList.map((item: TagRank) => (
-          <tr key={item.name}>
-            <td>{item.name}</td>
-            <td>{item.count}</td>
+    <div className={`${centerStyle} max-w-[960px] mt-10`}>
+      <table className="w-full">
+        <tbody>
+          <tr className="flex">
+            <th
+              className={`text-start ${mainFont} text-3xl pb-4 grow-0`}
+            >
+              Tag Name
+            </th>
+            <th className="grow" aria-label="empty space" />
+            <th
+              className={`text-end  ${mainFont} text-3xl pb-4 grow-0`}
+            >
+              Pieces Minted
+            </th>
           </tr>
-        ))}
+          {data.getLatestHourlyTagRankList.map((item: TagRank) => (
+            <tr key={item.name} className="flex">
+              <td className="text-start py-2 grow-0 max-w-[600px]">
+                <a
+                  href={`https://objkt.com/explore/tokens/1?tags=${item.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`hover:underline ${mainFont} text-2xl`}
+                >
+                  {item.name}
+                </a>
+              </td>
+              <td className="grow text-center py-2 border-dotted border-t-2 border-tb-text mx-11 mt-[26px]" />
+              <td className={`text-end py-2 ${mainFont} text-2xl grow-0`}>
+                {item.count}
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   )
 }
+
+const TopImage = () => (
+  <div className={`${centerStyle} w-[1280px] h-[360px] -mt-[120px]`}>
+    <Image src={City} alt="City Background Image" />
+  </div>
+)
+
+// const BottomImage = () => (
+//   <div className="fixed bottom-0 w-full flex justify-center pointer-events-none">
+//     <Image src={City} alt="City Background Image" />
+//   </div>
+// )
 
 const Home: NextPage = () => {
   // Get QueryClient from the context
@@ -122,17 +167,37 @@ const Home: NextPage = () => {
         <div className="h-max bg-tb-background">
           {/* h-max so that background color covers content that overflows screen size */}
           <Nav />
+          <TopImage />
           <div className="px-10">
-            <h1 className="flex justify-center mt-10 text-2xl font-dotGothic text-tb-text text-3xl">
-              Most Popular Tags used by artists on objkt.com last hour
-            </h1>
-            <h1 className="flex justify-center mt-8 text-2xl font-dotGothic text-tb-text text-2xl">
+            {/* use antialiased or text blurry with DotGothic16 font */}
+            <div className={`mt-10 ${mainFont} text-4xl ${centerStyle}`}>
+              {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
+              <h1>
+                Most Popular Tags used by artists on{' '}
+                <a
+                  href="https://objkt.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  objkt.com
+                </a>{' '}
+                last hour
+              </h1>
+            </div>
+            <h1 className={`mt-8 ${mainFont} text-3xl ${centerStyle}`}>
               (click on tag names to see art)
             </h1>
           </div>
           <Data />
+          <footer
+            className={`${centerStyle} mt-40 pb-[100px] ${mainFont} text-2xl`}
+          >
+            © 2022, Lands Software Inc.
+          </footer>
         </div>
       </div>
+      {/* <BottomImage /> */}
     </>
   )
 }
