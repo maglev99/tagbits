@@ -17,6 +17,7 @@ import { GET_LATEST_HOURLY_TAGRANKLIST } from '../queries'
 // Image Imports
 import TagbitsLogo from './index-images/Tagbits_Logo.png'
 import City from './index-images/City_Bkg.png'
+import City_Mobile from './index-images/City_Bkg_Mobile.png'
 
 const tagRankValidator = z.object({
   name: z.string(),
@@ -77,15 +78,11 @@ const Data = () => {
       <table className="w-full">
         <tbody>
           <tr className="flex">
-            <th
-              className={`text-start ${mainFont} text-3xl pb-4 grow-0`}
-            >
+            <th className={`text-start ${mainFont} text-3xl pb-4 grow-0`}>
               Tag Name
             </th>
             <th className="grow" aria-label="empty space" />
-            <th
-              className={`text-end  ${mainFont} text-3xl pb-4 grow-0`}
-            >
+            <th className={`text-end  ${mainFont} text-3xl pb-4 grow-0`}>
               Pieces Minted
             </th>
           </tr>
@@ -96,7 +93,7 @@ const Data = () => {
                   href={`https://objkt.com/explore/tokens/1?tags=${item.name}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`hover:underline ${mainFont} text-2xl`}
+                  className={`hover:underline ${mainFont} text-2xl break-all`}
                 >
                   {item.name}
                 </a>
@@ -114,16 +111,15 @@ const Data = () => {
 }
 
 const TopImage = () => (
-  <div className={`${centerStyle} w-[1280px] h-[360px] -mt-[120px]`}>
-    <Image src={City} alt="City Background Image" />
-  </div>
+  <>
+    <div className={`${centerStyle} max-w-[640px] max-h-[360px] -mt-[80px] md:hidden`}>
+      <Image src={City_Mobile} alt="City Background Image" priority />
+    </div>
+    <div className={`${centerStyle} max-w-[1280px] max-h-[360px] md:-mt-[80px] lg:-mt-[120px] hidden md:flex`}>
+      <Image src={City} alt="City Background Image" priority />
+    </div>
+  </>
 )
-
-// const BottomImage = () => (
-//   <div className="fixed bottom-0 w-full flex justify-center pointer-events-none">
-//     <Image src={City} alt="City Background Image" />
-//   </div>
-// )
 
 const Home: NextPage = () => {
   // Get QueryClient from the context
@@ -197,7 +193,6 @@ const Home: NextPage = () => {
           </footer>
         </div>
       </div>
-      {/* <BottomImage /> */}
     </>
   )
 }
