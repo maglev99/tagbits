@@ -34,10 +34,11 @@ const mainFont = 'font-dotGothic text-tb-text antialiased font-normal'
 
 // style for centering elements horizontally with max width
 const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
+const centerContianerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
 const Nav = () => (
-  <div className="z-10 sticky top-0 pointer-events-none flex items justify-start pt-4 ml-4 text-lg">
+  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg">
     <Link href="/">
       {/* use button to wrap Image to avoid nextjs link and a tag errors */}
       <button type="button">
@@ -78,16 +79,16 @@ const Data = () => {
       <table className="w-full">
         <tbody>
           <tr className="flex">
-            <th className={`text-start ${mainFont} text-3xl pb-4 grow-0`}>
+            <th className={`mx-6 lg:mx-0 text-start ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}>
               Tag Name
             </th>
             <th className="grow" aria-label="empty space" />
-            <th className={`text-end  ${mainFont} text-3xl pb-4 grow-0`}>
+            <th className={`mx-6 lg:mx-0 text-end  ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}>
               Pieces Minted
             </th>
           </tr>
           {data.getLatestHourlyTagRankList.map((item: TagRank) => (
-            <tr key={item.name} className="flex">
+            <tr key={item.name} className="flex mx-6 md:mx-10 lg:mx-0">
               <td className="text-start py-2 grow-0 max-w-[600px]">
                 <a
                   href={`https://objkt.com/explore/tokens/1?tags=${item.name}`}
@@ -111,14 +112,16 @@ const Data = () => {
 }
 
 const TopImage = () => (
-  <>
-    <div className={`${centerStyle} max-w-[640px] max-h-[360px] -mt-[80px] md:hidden`}>
+  
+  <div className={`${centerStyle} pointer-events-none`}>
+    <div className="max-w-[640px] max-h-[360px] -mt-[80px] md:hidden">
       <Image src={City_Mobile} alt="City Background Image" priority />
     </div>
-    <div className={`${centerStyle} max-w-[1280px] max-h-[360px] md:-mt-[80px] lg:-mt-[120px] hidden md:flex`}>
+    <div className="max-w-[1280px] max-h-[360px] md:-mt-[80px] lg:-mt-[120px] hidden md:flex">
       <Image src={City} alt="City Background Image" priority />
     </div>
-  </>
+    </div>
+  
 )
 
 const Home: NextPage = () => {
@@ -164,9 +167,9 @@ const Home: NextPage = () => {
           {/* h-max so that background color covers content that overflows screen size */}
           <Nav />
           <TopImage />
-          <div className="px-10">
+          <div className="px-6 lg:px-10">
             {/* use antialiased or text blurry with DotGothic16 font */}
-            <div className={`mt-10 ${mainFont} text-4xl ${centerStyle}`}>
+            <div className={`mt-4 md:mt-10 ${mainFont} text-2xl md:text-3xl lg:text-4xl ${centerContianerOnly} justify-start md:justify-center`}>
               {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
               <h1>
                 Most Popular Tags used by artists on{' '}
@@ -181,7 +184,7 @@ const Home: NextPage = () => {
                 last hour
               </h1>
             </div>
-            <h1 className={`mt-8 ${mainFont} text-3xl ${centerStyle}`}>
+            <h1 className={`mt-6 md:mt-8 ${mainFont} text-xl md:text-3xl ${centerContianerOnly} justify-start md:justify-center`}>
               (click on tag names to see art)
             </h1>
           </div>
