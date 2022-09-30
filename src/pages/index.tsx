@@ -34,11 +34,11 @@ const mainFont = 'font-dotGothic text-tb-text antialiased font-normal'
 
 // style for centering elements horizontally with max width
 const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
-const centerContianerOnly = 'max-w-[1200px] flex mx-auto'
+const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
 const Nav = () => (
-  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg">
+  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg w-[330px] md:w-full lg:max-w-[1200px] lg:justify-start lg:mx-auto lg:pl-2">
     <Link href="/">
       {/* use button to wrap Image to avoid nextjs link and a tag errors */}
       <button type="button">
@@ -49,6 +49,12 @@ const Nav = () => (
         />
       </button>
     </Link>
+    <div className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}>
+      <a href="https://twitter.com/TagbitsXYZ" target="_blank" rel="noopener noreferrer">Twitter</a>
+    </div>
+    <div className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}>
+      <a href="/" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
   </div>
 )
 
@@ -60,6 +66,9 @@ const Data = () => {
   )
 
   const style = `flex items justify-center mt-10 text-2xl ${mainFont}`
+
+  // replace # with %23 when searching or objkt.com won't recognize # symbol in tag search
+  const replaceLinkHashtags = (link: string) => link.replaceAll('#', '%23')
 
   if (status === 'loading') {
     return <h1 className={style}>Loading ...</h1>
@@ -79,11 +88,15 @@ const Data = () => {
       <table className="w-full">
         <tbody>
           <tr className="flex">
-            <th className={`mx-6 lg:mx-0 text-start ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}>
+            <th
+              className={`mx-6 md:ml-10 lg:mx-0 text-start ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}
+            >
               Tag Name
             </th>
             <th className="grow" aria-label="empty space" />
-            <th className={`mx-6 lg:mx-0 text-end  ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}>
+            <th
+              className={`mx-6 md:mr-10 lg:mx-0 text-end  ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}
+            >
               Pieces Minted
             </th>
           </tr>
@@ -91,7 +104,7 @@ const Data = () => {
             <tr key={item.name} className="flex mx-6 md:mx-10 lg:mx-0">
               <td className="text-start py-2 grow-0 max-w-[600px]">
                 <a
-                  href={`https://objkt.com/explore/tokens/1?tags=${item.name}`}
+                  href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(item.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`hover:underline ${mainFont} text-2xl break-all`}
@@ -112,7 +125,6 @@ const Data = () => {
 }
 
 const TopImage = () => (
-  
   <div className={`${centerStyle} pointer-events-none`}>
     <div className="max-w-[640px] max-h-[360px] -mt-[80px] md:hidden">
       <Image src={City_Mobile} alt="City Background Image" priority />
@@ -120,8 +132,7 @@ const TopImage = () => (
     <div className="max-w-[1280px] max-h-[360px] md:-mt-[80px] lg:-mt-[120px] hidden md:flex">
       <Image src={City} alt="City Background Image" priority />
     </div>
-    </div>
-  
+  </div>
 )
 
 const Home: NextPage = () => {
@@ -169,7 +180,9 @@ const Home: NextPage = () => {
           <TopImage />
           <div className="px-6 lg:px-10">
             {/* use antialiased or text blurry with DotGothic16 font */}
-            <div className={`mt-4 md:mt-10 ${mainFont} text-2xl md:text-3xl lg:text-4xl ${centerContianerOnly} justify-start md:justify-center`}>
+            <div
+              className={`mt-4 md:mt-10 ${mainFont} text-2xl md:text-3xl lg:text-4xl ${centerContainerOnly} justify-start md:justify-center`}
+            >
               {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
               <h1>
                 Most Popular Tags used by artists on{' '}
@@ -184,13 +197,20 @@ const Home: NextPage = () => {
                 last hour
               </h1>
             </div>
-            <h1 className={`mt-6 md:mt-8 ${mainFont} text-xl md:text-3xl ${centerContianerOnly} justify-start md:justify-center`}>
+            <h1
+              className={`mt-6 md:mt-8 ${mainFont} text-xl md:text-3xl ${centerContainerOnly} justify-start md:justify-center`}
+            >
               (click on tag names to see art)
             </h1>
           </div>
           <Data />
+          <div
+            className={`${centerStyle} mt-20 pb-0 ${mainFont} text-2xl hover:underline`}
+          >
+            <Link href="/">Return to top</Link>
+          </div>
           <footer
-            className={`${centerStyle} mt-40 pb-[100px] ${mainFont} text-2xl`}
+            className={`${centerStyle} mt-28 pb-[100px] ${mainFont} text-2xl`}
           >
             © 2022, Lands Software Inc.
           </footer>
