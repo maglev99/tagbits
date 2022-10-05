@@ -38,7 +38,7 @@ const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
 const Nav = () => (
-  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg w-[330px] md:w-full lg:max-w-[1200px] lg:justify-start lg:mx-auto lg:pl-2">
+  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg w-[250px] md:w-full lg:max-w-[1200px] lg:justify-start lg:mx-auto lg:pl-2">
     <Link href="/">
       {/* use button to wrap Image to avoid nextjs link and a tag errors */}
       <button type="button">
@@ -49,12 +49,24 @@ const Nav = () => (
         />
       </button>
     </Link>
-    <div className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}>
-      <a href="https://twitter.com/TagbitsXYZ" target="_blank" rel="noopener noreferrer">Twitter</a>
+    <div
+      className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
+    >
+      <a
+        href="https://twitter.com/TagbitsXYZ"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Twitter
+      </a>
     </div>
-    <div className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}>
-      <a href="/" target="_blank" rel="noopener noreferrer">Discord</a>
-    </div>
+    {/* <div
+      className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
+    >
+      <a href="/" target="_blank" rel="noopener noreferrer">
+        Discord
+      </a>
+    </div> */}
   </div>
 )
 
@@ -104,7 +116,9 @@ const Data = () => {
             <tr key={item.name} className="flex mx-6 md:mx-10 lg:mx-0">
               <td className="text-start py-2 grow-0 max-w-[600px]">
                 <a
-                  href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(item.name)}`}
+                  href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(
+                    item.name
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`hover:underline ${mainFont} text-2xl break-all`}
@@ -209,11 +223,32 @@ const Home: NextPage = () => {
           >
             <Link href="/">Return to top</Link>
           </div>
-          <footer
-            className={`${centerStyle} mt-28 pb-[100px] ${mainFont} text-2xl`}
-          >
+          <footer className={`${centerStyle} mt-28 ${mainFont} text-2xl`}>
             © 2022, Lands Software Inc.
           </footer>
+          <div
+            className={`${centerStyle} mt-6 pb-[100px] ${mainFont} text-lg`}
+          >
+            <div>
+              <a
+                href="https://chiseled-asteroid-e55.notion.site/Terms-of-Service-e23a61e6f1f54bc0b40bb2f7e2ffe72c"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                Terms of Service
+              </a>{' '}
+              |{' '}
+              <a
+                href="https://chiseled-asteroid-e55.notion.site/Privacy-Policy-e5456aef63fa4ffc866028e0d7a28ce8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                Privacy Policy
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </>
