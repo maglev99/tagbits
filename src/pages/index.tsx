@@ -20,7 +20,7 @@ import City from './index-images/City_Bkg.png'
 import City_Mobile from './index-images/City_Bkg_Mobile.png'
 
 const tagRankValidator = z.object({
-  name: z.string(),
+  tags: z.string().array(),
   count: z.number(),
 })
 
@@ -96,8 +96,20 @@ const Data = () => {
   }
 
   return (
-    <div className={`${centerStyle} max-w-[960px] mt-10`}>
-      <table className="w-full">
+    <div className={`${centerContainerOnly} max-w-[960px] mt-10 flex-wrap bg-blue-200`}>
+      
+      {data.getLatestHourlyTagRankList.map((item: TagRank) => (
+        <>
+        {/* remove empty tags from list using filter */}
+          {item.tags.filter(tag => tag.trim().length > 0).map((filteredTag: string) => (
+            <div className="inline-flex flex-wrap mx-2">
+            <h1 key={filteredTag} className="mx-2 border-solid border-2 my-2 border-sky-500">{filteredTag}</h1>
+            {item.tags.indexOf(filteredTag) === item.tags.length - 1 && <h1 className="my-2">{item.count}</h1>}
+            </div>
+          ))}
+        </>
+      ))}
+      {/* <table className="w-full">
         <tbody>
           <tr className="flex">
             <th
@@ -133,10 +145,26 @@ const Data = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
     </div>
   )
 }
+
+
+// {data.getLatestHourlyTagRankList.map((item: TagRank) => (
+//   <div key={item.count} className="">
+//     {item.tags.map((tag: string) => (
+//       <div className="inline-flex flex-wrap">
+//       <h1 key={tag} className="mx-4 border-solid border-2 my-2 border-sky-500">{tag}</h1>
+//       {item.tags.indexOf(tag) === item.tags.length - 1 && <h1 className="my-2">{item.count}</h1>}
+//       </div>
+//     ))}
+//     {/* <h1 className="my-2">{item.count}</h1> */}
+//     {/* <h1 className="mr-6">{item.tags[0]}</h1> */}
+//   </div>
+// ))}
+
+
 
 const TopImage = () => (
   <div className={`${centerStyle} pointer-events-none`}>
@@ -199,7 +227,7 @@ const Home: NextPage = () => {
             >
               {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
               <h1>
-                Most Popular Tags used by artists on{' '}
+                Most Minted Tags on{' '}
                 <a
                   href="https://objkt.com"
                   target="_blank"
@@ -226,9 +254,7 @@ const Home: NextPage = () => {
           <footer className={`${centerStyle} mt-28 ${mainFont} text-2xl`}>
             © 2022, Lands Software Inc.
           </footer>
-          <div
-            className={`${centerStyle} mt-6 pb-[100px] ${mainFont} text-lg`}
-          >
+          <div className={`${centerStyle} mt-6 pb-[100px] ${mainFont} text-lg`}>
             <div>
               <a
                 href="https://chiseled-asteroid-e55.notion.site/Terms-of-Service-e23a61e6f1f54bc0b40bb2f7e2ffe72c"

@@ -9,7 +9,7 @@ const TEST_QUERY = gql`
 export const GET_LATEST_HOURLY_TAGRANKLIST = gql`
 query {
 	getLatestHourlyTagRankList {
-		name
+		tags
 		count
 	}
 }

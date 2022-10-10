@@ -7,8 +7,10 @@ const typeDefs = gql`
   }
 
   type TagRank {
-    name:  String
+    tags: [String]
     count: Int
   }
 `
 export default typeDefs
+
+

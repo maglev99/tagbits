@@ -1,16 +1,18 @@
 import z from 'zod'
 import prisma from '../src/server/db/client'
 
-const tagRankListValidator = z.object({
-  name: z.string(),
-  count: z.number()
-}).array()
+const tagRankListValidator = z
+  .object({
+    tags: z.string().array(),
+    count: z.number(),
+  })
+  .array()
 
 type TagRankList = z.infer<typeof tagRankListValidator>
 
 const tagRankValidator = z.object({
-    name: z.string(),
-    count: z.number()
+  tags: z.string().array(),
+  count: z.number(),
 })
 
 type TagRank = z.infer<typeof tagRankValidator>
@@ -21,7 +23,7 @@ const resolvers = {
 
     getLatestHourlyTagRankList: async () => {
       const rawData: TagRankList = await prisma.$queryRaw`
-      SELECT  name, SUM(count) as count FROM "TagRank"
+      SELECT count, array_agg(name ORDER BY UPPER(name) ASC) as tags FROM "TagRank"
       WHERE "tagRankListId" = 
         (
           SELECT id FROM "TagRankList"
@@ -29,13 +31,13 @@ const resolvers = {
           ORDER BY start DESC
           LIMIT 1
         )
-      GROUP BY name 
-      ORDER BY count DESC, name
+      GROUP BY count 
+      ORDER BY count DESC
       `
       // convert rawData type to match gql schema
-      const data = rawData.map((tag: TagRank) => ({
-        name: tag.name,
-        count: Number(tag.count.toString())
+      const data = rawData.map((item: TagRank) => ({
+        tags: item.tags,
+        count: Number(item.count.toString()),
       }))
       return data
     },
