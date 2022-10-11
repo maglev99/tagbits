@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -96,75 +96,27 @@ const Data = () => {
   }
 
   return (
-    <div className={`${centerContainerOnly} max-w-[960px] mt-10 flex-wrap bg-blue-200`}>
-      
+    <div className={`${centerContainerOnly} max-w-[960px] mt-6 lg:mt-10 px-1 flex-wrap`}>
       {data.getLatestHourlyTagRankList.map((item: TagRank) => (
-        <>
+        <div key={`${item.tags[0]}_${item.count}`}>
         {/* remove empty tags from list using filter */}
           {item.tags.filter(tag => tag.trim().length > 0).map((filteredTag: string) => (
-            <div className="inline-flex flex-wrap mx-2">
-            <h1 key={filteredTag} className="mx-2 border-solid border-2 my-2 border-sky-500">{filteredTag}</h1>
-            {item.tags.indexOf(filteredTag) === item.tags.length - 1 && <h1 className="my-2">{item.count}</h1>}
+            <div key={filteredTag} className="inline-flex flex-wrap mx-1 items-center">
+            <a 
+            href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(
+              filteredTag
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] bg-tb-text hover:underline">{filteredTag}</a>
+            {item.tags.indexOf(filteredTag) === item.tags.length - 1 && <h1 className={`${mainFont} text-xl translate-y-2`}>{item.count}</h1>}
             </div>
           ))}
-        </>
+        </div>
       ))}
-      {/* <table className="w-full">
-        <tbody>
-          <tr className="flex">
-            <th
-              className={`mx-6 md:ml-10 lg:mx-0 text-start ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}
-            >
-              Tag Name
-            </th>
-            <th className="grow" aria-label="empty space" />
-            <th
-              className={`mx-6 md:mr-10 lg:mx-0 text-end  ${mainFont} text-2xl md:text-3xl pb-4 grow-0`}
-            >
-              Pieces Minted
-            </th>
-          </tr>
-          {data.getLatestHourlyTagRankList.map((item: TagRank) => (
-            <tr key={item.name} className="flex mx-6 md:mx-10 lg:mx-0">
-              <td className="text-start py-2 grow-0 max-w-[600px]">
-                <a
-                  href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(
-                    item.name
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`hover:underline ${mainFont} text-2xl break-all`}
-                >
-                  {item.name}
-                </a>
-              </td>
-              <td className="grow text-center py-2 border-dotted border-t-2 border-tb-text mx-11 mt-[26px]" />
-              <td className={`text-end py-2 ${mainFont} text-2xl grow-0`}>
-                {item.count}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
     </div>
   )
 }
-
-
-// {data.getLatestHourlyTagRankList.map((item: TagRank) => (
-//   <div key={item.count} className="">
-//     {item.tags.map((tag: string) => (
-//       <div className="inline-flex flex-wrap">
-//       <h1 key={tag} className="mx-4 border-solid border-2 my-2 border-sky-500">{tag}</h1>
-//       {item.tags.indexOf(tag) === item.tags.length - 1 && <h1 className="my-2">{item.count}</h1>}
-//       </div>
-//     ))}
-//     {/* <h1 className="my-2">{item.count}</h1> */}
-//     {/* <h1 className="mr-6">{item.tags[0]}</h1> */}
-//   </div>
-// ))}
-
-
 
 const TopImage = () => (
   <div className={`${centerStyle} pointer-events-none`}>
@@ -239,11 +191,6 @@ const Home: NextPage = () => {
                 last hour
               </h1>
             </div>
-            <h1
-              className={`mt-6 md:mt-8 ${mainFont} text-xl md:text-3xl ${centerContainerOnly} justify-start md:justify-center`}
-            >
-              (click on tag names to see art)
-            </h1>
           </div>
           <Data />
           <div
