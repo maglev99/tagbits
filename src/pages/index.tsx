@@ -37,40 +37,7 @@ const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
 const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
-const Nav = () => (
-  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg w-[250px] md:w-full lg:max-w-[1200px] lg:justify-start lg:mx-auto lg:pl-2">
-    <Link href="/">
-      {/* use button to wrap Image to avoid nextjs link and a tag errors */}
-      <button type="button">
-        <Image
-          src={TagbitsLogo}
-          alt="Logo"
-          className="pointer-events-auto cursor-pointer"
-        />
-      </button>
-    </Link>
-    <div
-      className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
-    >
-      <a
-        href="https://twitter.com/TagbitsXYZ"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Twitter
-      </a>
-    </div>
-    {/* <div
-      className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
-    >
-      <a href="/" target="_blank" rel="noopener noreferrer">
-        Discord
-      </a>
-    </div> */}
-  </div>
-)
-
-const Data = () => {
+const LastHourData = () => {
   const { status, data, error } = useGQLQuery(
     ['latest_hourly_tagranklist'],
     GET_LATEST_HOURLY_TAGRANKLIST,
@@ -96,27 +63,43 @@ const Data = () => {
   }
 
   return (
-    <div className={`${centerContainerOnly} max-w-[960px] mt-6 lg:mt-10 px-1 flex-wrap`}>
+    <div className={`${centerContainerOnly} max-w-[960px] mt-4 px-1 flex-wrap`}>
       {data.getLatestHourlyTagRankList.map((item: TagRank) => (
         <div key={`${item.tags[0]}_${item.count}`}>
-        {/* remove empty tags from list using filter */}
-          {item.tags.filter(tag => tag.trim().length > 0).map((filteredTag: string) => (
-            <div key={filteredTag} className="inline-flex flex-wrap mx-1 items-center">
-            <a 
-            href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(
-              filteredTag
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-sans font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] bg-tb-text hover:underline">{filteredTag}</a>
-            {item.tags.indexOf(filteredTag) === item.tags.length - 1 && <h1 className={`${mainFont} text-xl translate-y-2`}>{item.count}</h1>}
-            </div>
-          ))}
+          {/* remove empty tags from list using filter */}
+          {item.tags
+            .filter((tag) => tag.trim().length > 0)
+            .map((filteredTag: string) => (
+              <div
+                key={filteredTag}
+                className="inline-flex flex-wrap mx-1 items-center"
+              >
+                <a
+                  href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(
+                    filteredTag
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] bg-tb-text hover:underline"
+                >
+                  {filteredTag}
+                </a>
+                {item.tags.indexOf(filteredTag) === item.tags.length - 1 && (
+                  <h1 className={`${mainFont} text-xl translate-y-2`}>
+                    {item.count}
+                  </h1>
+                )}
+              </div>
+            ))}
         </div>
       ))}
     </div>
   )
 }
+
+// const Last24HourData = () => (
+//   <h1>Last 24 Hour Data</h1>
+// )
 
 const TopImage = () => (
   <div className={`${centerStyle} pointer-events-none`}>
@@ -126,6 +109,15 @@ const TopImage = () => (
     <div className="max-w-[1280px] max-h-[360px] md:-mt-[80px] lg:-mt-[120px] hidden md:flex">
       <Image src={City} alt="City Background Image" priority />
     </div>
+  </div>
+)
+
+const Filters = () => (
+  <div
+    className={`${centerContainerOnly} max-w-[960px] pl-4 justify-start my-8 bg-blue-200`}
+  >
+    <h1>Last Hour</h1>
+    <h1>Last 24 Hours</h1>
   </div>
 )
 
@@ -166,63 +158,38 @@ const Home: NextPage = () => {
       <Head>
         <title>Tagbits</title>
       </Head>
-      <div className="h-screen bg-tb-background">
-        {/* h-screen so that background color covers entire screen if content length shorter than screen size */}
-        <div className="h-max bg-tb-background">
-          {/* h-max so that background color covers content that overflows screen size */}
-          <Nav />
-          <TopImage />
-          <div className="px-6 lg:px-10">
-            {/* use antialiased or text blurry with DotGothic16 font */}
-            <div
-              className={`mt-4 md:mt-10 ${mainFont} text-2xl md:text-3xl lg:text-4xl ${centerContainerOnly} justify-start md:justify-center`}
+      <TopImage />
+      <div className="">
+        {/* use antialiased or text blurry with DotGothic16 font */}
+        <div
+          className={`mt-4 md:mt-10 ${mainFont} text-2xl md:text-3xl lg:text-4xl ${centerContainerOnly} max-w-[960px] pl-4 justify-start`}
+        >
+          {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
+          <h1>
+            Most Minted Tags on{' '}
+            <a
+              href="https://objkt.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
             >
-              {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
-              <h1>
-                Most Minted Tags on{' '}
-                <a
-                  href="https://objkt.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
-                >
-                  objkt.com
-                </a>{' '}
-                last hour
-              </h1>
-            </div>
-          </div>
-          <Data />
-          <div
-            className={`${centerStyle} mt-20 pb-0 ${mainFont} text-2xl hover:underline`}
-          >
-            <Link href="/">Return to top</Link>
-          </div>
-          <footer className={`${centerStyle} mt-28 ${mainFont} text-2xl`}>
-            © 2022, Lands Software Inc.
-          </footer>
-          <div className={`${centerStyle} mt-6 pb-[100px] ${mainFont} text-lg`}>
-            <div>
-              <a
-                href="https://chiseled-asteroid-e55.notion.site/Terms-of-Service-e23a61e6f1f54bc0b40bb2f7e2ffe72c"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                Terms of Service
-              </a>{' '}
-              |{' '}
-              <a
-                href="https://chiseled-asteroid-e55.notion.site/Privacy-Policy-e5456aef63fa4ffc866028e0d7a28ce8"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                Privacy Policy
-              </a>
-            </div>
-          </div>
+              objkt.com
+            </a>{' '}
+            last hour
+          </h1>
         </div>
+        <Filters />
+        <div
+          className={`${mainFont} text-xl md:text-2xl ${centerContainerOnly} max-w-[960px] pl-4 justify-start`}
+        >
+          <h3>*number is pieces minted</h3>
+        </div>
+      </div>
+      <LastHourData />
+      <div
+        className={`${centerStyle} mt-20 pb-0 ${mainFont} text-2xl hover:underline`}
+      >
+        <Link href="/">Return to top</Link>
       </div>
     </>
   )
