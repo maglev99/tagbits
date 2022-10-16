@@ -18,6 +18,10 @@ import { GET_LATEST_HOURLY_TAGRANKLIST } from '../queries'
 import City from './index-images/City_Bkg.png'
 import City_Mobile from './index-images/City_Bkg_Mobile.png'
 
+// Component Imports
+import Tagline from './components/tagline'
+import Filters from './components/filters'
+
 const tagRankValidator = z.object({
   tags: z.string().array(),
   count: z.number(),
@@ -79,7 +83,7 @@ const LastHourData = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] bg-tb-text hover:underline"
+                  className="font-sans font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] bg-tb-text hover:underline max-w-sm truncate"
                 >
                   {filteredTag}
                 </a>
@@ -103,19 +107,6 @@ const TopImage = () => (
     </div>
     <div className="max-w-[1280px] max-h-[360px] md:-mt-[80px] lg:-mt-[120px] hidden md:flex">
       <Image src={City} alt="City Background Image" priority />
-    </div>
-  </div>
-)
-
-const Filters = () => (
-  <div
-    className={`${centerContainerOnly} max-w-[960px] pl-4 justify-start my-8 bg-blue-200`}
-  >
-    <div className="mr-2">
-      <Link href="/">Last Hour</Link>
-    </div>
-    <div className="mr-2">
-      <Link href="/last-24-hours">Last 24 Hours</Link>
     </div>
   </div>
 )
@@ -158,24 +149,8 @@ const Home: NextPage = () => {
         <title>Tagbits</title>
       </Head>
       <TopImage />
-      <div className="">
-        {/* use antialiased or text blurry with DotGothic16 font */}
-        <div
-          className={`mt-4 md:mt-10 ${mainFont} text-2xl md:text-3xl lg:text-4xl ${centerContainerOnly} max-w-[960px] pl-4 justify-start`}
-        >
-          {/* div tag wraps h1 tag so spacing between link and other words don't collapse in flexbox */}
-          <h1>
-            Most Minted Tags on{' '}
-            <a
-              href="https://objkt.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline"
-            >
-              objkt.com
-            </a>{' '}
-          </h1>
-        </div>
+      <div>
+        <Tagline />
         <Filters />
         <div
           className={`${mainFont} text-xl md:text-2xl ${centerContainerOnly} max-w-[960px] pl-4 justify-start`}
