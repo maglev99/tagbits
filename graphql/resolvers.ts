@@ -41,6 +41,30 @@ const resolvers = {
       }))
       return data
     },
+
+    getLatest24HoursTagRankList: async () => {
+      const rawData: TagRankList = await prisma.$queryRaw`
+      SELECT total_count as count, array_agg(name ORDER BY UPPER(name) ASC) as tags FROM 
+      (SELECT sum(count) as total_count, name FROM "TagRank"
+      WHERE "tagRankListId" IN 
+              (
+                SELECT id FROM "TagRankList"
+                WHERE type = 'HOUR'
+                ORDER BY start DESC
+                LIMIT 24
+              )
+      GROUP BY name 
+      ORDER BY total_count DESC) as SummedList
+      GROUP BY total_count
+      ORDER BY total_count DESC
+      `
+      // convert rawData type to match gql schema
+      const data = rawData.map((item: TagRank) => ({
+        tags: item.tags,
+        count: Number(item.count.toString()),
+      }))
+      return data
+    },
   },
 }
 

@@ -10,13 +10,13 @@ import { io } from 'socket.io-client'
 import { useQueryClient } from '@tanstack/react-query'
 
 import z from 'zod'
-import useGQLQuery from '../../graphql/useGQLQuery'
+import useGQLQuery from '../../../graphql/useGQLQuery'
 
-import { GET_LATEST_HOURLY_TAGRANKLIST } from '../queries'
+import { GET_LATEST_24HOURS_TAGRANKLIST } from '../../queries'
 
 // Image Imports
-import City from './index-images/City_Bkg.png'
-import City_Mobile from './index-images/City_Bkg_Mobile.png'
+import City from '../index-images/City_Bkg.png'
+import City_Mobile from '../index-images/City_Bkg_Mobile.png'
 
 const tagRankValidator = z.object({
   tags: z.string().array(),
@@ -36,10 +36,10 @@ const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
 const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
-const LastHourData = () => {
+const Last24HoursData = () => {
   const { status, data, error } = useGQLQuery(
-    ['latest_hourly_tagranklist'],
-    GET_LATEST_HOURLY_TAGRANKLIST,
+    ['latest_24hours_tagranklist'],
+    GET_LATEST_24HOURS_TAGRANKLIST,
     {}
   )
 
@@ -63,7 +63,7 @@ const LastHourData = () => {
 
   return (
     <div className={`${centerContainerOnly} max-w-[960px] mt-4 px-1 flex-wrap`}>
-      {data.getLatestHourlyTagRankList.map((item: TagRank) => (
+      {data.getLatest24HoursTagRankList.map((item: TagRank) => (
         <div key={`${item.tags[0]}_${item.count}`}>
           {/* remove empty tags from list using filter */}
           {item.tags
@@ -140,9 +140,9 @@ const Home: NextPage = () => {
     })
 
     socket.on('refetch', (data: string) => {
-      // console.log('refetch: ', data)
+      console.log('refetch: ', data)
       if (data === 'hourly_tagranklist') {
-        queryClient.invalidateQueries(['latest_hourly_tagranklist'])
+        queryClient.invalidateQueries(['latest_24hours_tagranklist'])
         console.log('refetched query')
       }
     })
@@ -183,11 +183,11 @@ const Home: NextPage = () => {
           <h3>*number is pieces minted</h3>
         </div>
       </div>
-      <LastHourData />
+      <Last24HoursData />
       <div
         className={`${centerStyle} mt-20 pb-0 ${mainFont} text-2xl hover:underline`}
       >
-        <Link href="/">Return to top</Link>
+        <Link href="/last-24-hours">Return to top</Link>
       </div>
     </>
   )
