@@ -5,6 +5,7 @@ const typeDefs = gql`
     testQuery: String
     getLatestHourlyTagRankList: [TagRank]
     getLatest24HoursTagRankList: [TagRank]
+    getLatestDayTagRankList: [TagRank]
   }
 
   type TagRank {

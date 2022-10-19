@@ -24,6 +24,15 @@ query {
 }
 `
 
+export const GET_LATEST_DAY_TAGRANKLIST = gql`
+query {
+	getLatestDayTagRankList {
+		tags
+		count
+	}
+}
+`
+
 export default TEST_QUERY
 
 
