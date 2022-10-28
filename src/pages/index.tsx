@@ -85,7 +85,7 @@ const LastHourData = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(item?.count)} hover:underline max-w-sm truncate"`}
+                  className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(item?.count)} hover:underline max-w-sm truncate text-ellipsis"`}
                 >
                   {filteredTag}
                 </a>
