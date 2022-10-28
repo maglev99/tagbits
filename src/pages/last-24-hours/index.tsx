@@ -22,6 +22,8 @@ import City_Mobile from '../index-images/City_Bkg_Mobile.png'
 import Filters from '../components/filters'
 import Tagline from '../components/tagline'
 
+import chooseTagColor from '../components/utils/tagColor'
+
 const tagRankValidator = z.object({
   tags: z.string().array(),
   count: z.number(),
@@ -83,7 +85,7 @@ const Last24HoursData = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] bg-tb-text hover:underline max-w-sm truncate"
+                  className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(item?.count)} hover:underline max-w-sm truncate"`}
                 >
                   {filteredTag}
                 </a>
