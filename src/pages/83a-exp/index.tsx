@@ -11,6 +11,7 @@ import { io } from 'socket.io-client'
 import { useQueryClient } from '@tanstack/react-query'
 
 import z from 'zod'
+import date from 'date-and-time'
 import useGQLQuery from '../../../graphql/useGQLQuery'
 
 import { GET_LATEST_DAY_TAGRANKLIST } from '../../queries'
@@ -44,48 +45,11 @@ const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
 const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
-// // Colored Background Palettes Code START
-// const tagBackgroundPalettes = [
-//   'bg-[#465B90]',
-//   'bg-[#b06868]',
-//   'bg-[#7DA863]',
-//   'bg-[#67518A]',
-//   'bg-[#894A83]',
-//   'bg-[#B69059]',
-//   'bg-[#A971AA]',
-// ]
-
-// const getRandomInt = (max: number) => Math.floor(Math.random() * max)
-
-// let currentBgColorIndex = getRandomInt(7)
-
-// // keeps track of current count for each tag to switch colors when next tag has a different count than previous 
-// let currentCount = 0 
-
-// const chooseBgColor = (count: number) => {
-//   if (count && currentCount !== count)
-//   {
-//     currentCount = count
-//     currentBgColorIndex = 0 + ((currentBgColorIndex + 1) % 7)
-//   }
-
-//   return tagBackgroundPalettes[currentBgColorIndex]
-// }
-// // Colored Background Palettes Code END
-
 const lastDay = (daysAgo: number) => {
-  const date = new Date()
-  // set date to UTC
-  date.setDate(date.getUTCDate())
-  date.setDate(date.getDate() - daysAgo)
+  const currentDate = new Date()
+  const now = date.format(date.addDays(currentDate, -daysAgo), 'YYYY-MM-DD', true)
 
-  const year = date.getFullYear()
-
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-
-  const withHyphens = [year, month, day].join('-')
-  return withHyphens
+  return now
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -149,7 +113,9 @@ const LastDayData = React.forwardRef((props, ref: any) => {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(item?.count)} hover:underline max-w-sm truncate text-ellipsis"`}
+                    className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(
+                      item?.count
+                    )} hover:underline max-w-sm truncate text-ellipsis"`}
                   >
                     {filteredTag}
                   </a>
