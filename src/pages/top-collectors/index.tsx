@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { Fragment } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
@@ -64,6 +65,7 @@ const top100Collectors1DayQueryDocument = gql(/* GraphQL */ `
           fa_contract
         }
         twitter
+        tzdomain
       }
       rank
     }
@@ -93,7 +95,7 @@ const Data = () => {
 
   const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont} bg-gray-200`
 
-  const collectorStyle = `mr-6 bg-green-200`
+  const rowDataStyle = `bg-green-200`
 
   if (status === 'loading') {
     return <h1 className={containerStyle}>Loading ...</h1>
@@ -114,20 +116,30 @@ const Data = () => {
     <>
       {data.sales_stat.map((collector: any) => (
         <div className={containerStyle} key={collector.rank}>
-          <div className={`${centerContainerOnly} bg-blue-200`}>
-            <h1 className={collectorStyle}>{collector.rank}.</h1>
+          <div
+            className={`${centerContainerOnly} max-w-[960px] grow bg-blue-200`}
+          >
+            <h1 className={rowDataStyle}>{collector.rank}.</h1>
             {/* <h1 className={collectorStyle}>Profile Pic: {collector.subject.logo}</h1> */}
-            {/* if no alias display address, otherwise display alias (nickname) */}
-            {collector.subject.alias === null ||
-            collector.subject.alias.trim().length === 0 ? (
-              <h1 className={collectorStyle}>{collector.subject.address}</h1>
+            {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
+            {collector.subject.alias !== null &&
+            collector.subject.alias.trim().length > 0 ? (
+              <h1 className={rowDataStyle}>{collector.subject.alias}</h1>
+            ) : collector.subject.tzdomain !== null &&
+              collector.subject.tzdomain.trim().length > 0 ? (
+              <h1 className={rowDataStyle}>{collector.subject.tzdomain}</h1>
             ) : (
-              <h1 className={collectorStyle}>{collector.subject.alias}</h1>
+              <h1 className={rowDataStyle}>{`${collector.subject.address.slice(
+                0,
+                5
+              )}...${collector.subject.address.slice(-5)}`}</h1>
             )}
             {/* <h1 className={collectorStyle}>
             Twitter: {collector.subject.twitter}
           </h1> */}
-            <h1 className={collectorStyle}>Volume: {collector.volume}</h1>
+            <div className={`${rowDataStyle} mr-0 ml-auto`}>
+              Volume: {(parseFloat(collector.volume) / 1000000).toFixed(2)} XTZ
+            </div>
           </div>
         </div>
       ))}
