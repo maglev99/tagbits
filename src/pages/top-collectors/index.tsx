@@ -1,12 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
 
 import Image from 'next/image'
 
-// import { useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 // import z from 'zod'
 // import useGQLQuery from '../../../graphql/useGQLQuery'
@@ -15,7 +15,6 @@ import Image from 'next/image'
 // graphql imports
 import request from 'graphql-request'
 import gql from 'graphql-tag'
-import { useQuery } from '@tanstack/react-query'
 
 // Image Imports
 import City from '../index-images/City_Bkg.png'
@@ -83,6 +82,76 @@ const TopImage = () => (
   </div>
 )
 
+const ProfilePicture = ({ profilePicSize, profilePic, onErrorFunction }: any) => (
+  <div
+    className={`overflow-hidden mx-1 w-[${profilePicSize}] h-[${profilePicSize}]`}
+  >
+    <Image
+      src={profilePic}
+      alt="Profile Photo"
+      width={profilePicSize}
+      height={profilePicSize}
+      layout="fixed"
+      objectFit="cover"
+      onError={() => onErrorFunction()}
+    />
+  </div>
+)
+
+const CollectorInfoRow = ({ collector }: any) => {
+  const rowDataStyle = `bg-green-200`
+  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont} bg-gray-200`
+
+  const [rank] = useState(collector.rank)
+  const [profilePic, setProfilePic] = useState(collector.subject.logo)
+  const [nickname] = useState(collector.subject.alias)
+  const [tzDomain] = useState(collector.subject.tzdomain)
+  const [walletAddress] = useState(collector.subject.address)
+  const [volume] = useState(collector.volume)
+
+  // clear image link for images that can't load
+  const clearImageLink = () => {
+    // console.log('clear image link called')
+    setProfilePic('')
+  }
+
+  const profilePicSize = '60px'
+
+  const defaultTzktProfilePic = `${'https://services.tzkt.io/v1/avatars/'}${walletAddress}`
+
+  return (
+    <div className={containerStyle} key={rank}>
+      <div className={`${centerContainerOnly} max-w-[960px] grow bg-blue-200`}>
+        <h1 className={rowDataStyle}>{rank}.</h1>
+        {profilePic !== null &&
+        profilePic !== 'N/A' &&
+        profilePic.slice(0, 21) === 'https://pbs.twimg.com' ? (
+          <ProfilePicture profilePicSize={profilePicSize} profilePic={profilePic} onErrorFunction={clearImageLink} />
+        ) : (
+          <ProfilePicture profilePicSize={profilePicSize} profilePic={defaultTzktProfilePic} onErrorFunction={clearImageLink} />
+        )}
+        {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
+        {nickname !== null && nickname.trim().length > 0 ? (
+          <h1 className={rowDataStyle}>{nickname}</h1>
+        ) : tzDomain !== null && tzDomain.trim().length > 0 ? (
+          <h1 className={rowDataStyle}>{tzDomain}</h1>
+        ) : (
+          <h1 className={rowDataStyle}>{`${walletAddress.slice(
+            0,
+            5
+          )}...${walletAddress.slice(-5)}`}</h1>
+        )}
+        {/* <h1 className={collectorStyle}>
+            Twitter: {collector.subject.twitter}
+          </h1> */}
+        <div className={`${rowDataStyle} mr-0 ml-auto`}>
+          Volume: {(parseFloat(volume) / 1000000).toFixed(2)} XTZ
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const Data = () => {
   const { data, status, error } = useQuery({
     queryKey: ['top-100-collectors-1-day'],
@@ -94,8 +163,6 @@ const Data = () => {
   })
 
   const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont} bg-gray-200`
-
-  const rowDataStyle = `bg-green-200`
 
   if (status === 'loading') {
     return <h1 className={containerStyle}>Loading ...</h1>
@@ -115,33 +182,7 @@ const Data = () => {
   return (
     <>
       {data.sales_stat.map((collector: any) => (
-        <div className={containerStyle} key={collector.rank}>
-          <div
-            className={`${centerContainerOnly} max-w-[960px] grow bg-blue-200`}
-          >
-            <h1 className={rowDataStyle}>{collector.rank}.</h1>
-            {/* <h1 className={collectorStyle}>Profile Pic: {collector.subject.logo}</h1> */}
-            {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
-            {collector.subject.alias !== null &&
-            collector.subject.alias.trim().length > 0 ? (
-              <h1 className={rowDataStyle}>{collector.subject.alias}</h1>
-            ) : collector.subject.tzdomain !== null &&
-              collector.subject.tzdomain.trim().length > 0 ? (
-              <h1 className={rowDataStyle}>{collector.subject.tzdomain}</h1>
-            ) : (
-              <h1 className={rowDataStyle}>{`${collector.subject.address.slice(
-                0,
-                5
-              )}...${collector.subject.address.slice(-5)}`}</h1>
-            )}
-            {/* <h1 className={collectorStyle}>
-            Twitter: {collector.subject.twitter}
-          </h1> */}
-            <div className={`${rowDataStyle} mr-0 ml-auto`}>
-              Volume: {(parseFloat(collector.volume) / 1000000).toFixed(2)} XTZ
-            </div>
-          </div>
-        </div>
+        <CollectorInfoRow key={collector.subject.address} collector={collector} />
       ))}
     </>
   )

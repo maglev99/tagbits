@@ -13,4 +13,28 @@ function defineNextConfig(config) {
 export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
+
+  images: {
+    domains: ['pbs.twimg.com', 'services.tzkt.io'],
+  },
+
+  // images: {
+  //   formats: ['image/avif', 'image/webp'],
+  //   remotePatterns: [
+  //     {
+  //       domains: ['pbs.twimg.com'],
+
+  //       // protocol: 'https',
+  //       // hostname: 'pbs.twimg.com',
+  //       // port: '',
+  //       // pathname: '/profile_images/**',
+
+  //       // hostname: ['pbs.twimg.com'],
+  //       // formats: ['image/jpg']
+  //       // hostname: 'assets.vercel.com',
+  //       // port: '',
+  //       // pathname: '/image/upload/**',
+  //     },
+  //   ],
+  // },
 })
