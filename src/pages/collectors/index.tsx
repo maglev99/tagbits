@@ -19,6 +19,7 @@ import gql from 'graphql-tag'
 // Image Imports
 import City from '../index-images/City_Bkg.png'
 import City_Mobile from '../index-images/City_Bkg_Mobile.png'
+import TwitterLogo from '../app-icons/twitter-logo-128.png'
 
 const mainFont = 'font-dotGothic text-tb-text antialiased font-normal'
 
@@ -82,9 +83,13 @@ const TopImage = () => (
   </div>
 )
 
-const ProfilePicture = ({ profilePicSize, profilePic, onErrorFunction }: any) => (
+const ProfilePicture = ({
+  profilePicSize,
+  profilePic,
+  onErrorFunction,
+}: any) => (
   <div
-    className={`overflow-hidden mx-1 w-[${profilePicSize}] h-[${profilePicSize}]`}
+    className={`overflow-hidden mx-1 w-[${profilePicSize}] h-[${profilePicSize}] rounded-full`}
   >
     <Image
       src={profilePic}
@@ -94,6 +99,19 @@ const ProfilePicture = ({ profilePicSize, profilePic, onErrorFunction }: any) =>
       layout="fixed"
       objectFit="cover"
       onError={() => onErrorFunction()}
+    />
+  </div>
+)
+
+const TwitterIcon = ({ twitterURL, iconSize }: any) => (
+  <div className={`overflow-hidden ml-4 -mb-2 w-[${iconSize}] h-[${iconSize}]`}>
+    <Image
+      src={TwitterLogo}
+      alt="Profile Photo"
+      width={iconSize}
+      height={iconSize}
+      layout="fixed"
+      objectFit="cover"
     />
   </div>
 )
@@ -116,19 +134,34 @@ const CollectorInfoRow = ({ collector }: any) => {
   }
 
   const profilePicSize = '60px'
+  const iconSize = '30px'
 
   const defaultTzktProfilePic = `${'https://services.tzkt.io/v1/avatars/'}${walletAddress}`
 
   return (
-    <div className={containerStyle} key={rank}>
-      <div className={`${centerContainerOnly} max-w-[960px] grow bg-blue-200`}>
+    <>
+    {/* mobile view */}
+
+    {/* tablet and desktop view */}
+    <div className={`${containerStyle} hidden md:flex`} key={rank}>
+      <div
+        className={`${centerContainerOnly} max-w-[960px] grow items-center bg-blue-200`}
+      >
         <h1 className={rowDataStyle}>{rank}.</h1>
         {profilePic !== null &&
         profilePic !== 'N/A' &&
         profilePic.slice(0, 21) === 'https://pbs.twimg.com' ? (
-          <ProfilePicture profilePicSize={profilePicSize} profilePic={profilePic} onErrorFunction={clearImageLink} />
+          <ProfilePicture
+            profilePicSize={profilePicSize}
+            profilePic={profilePic}
+            onErrorFunction={clearImageLink}
+          />
         ) : (
-          <ProfilePicture profilePicSize={profilePicSize} profilePic={defaultTzktProfilePic} onErrorFunction={clearImageLink} />
+          <ProfilePicture
+            profilePicSize={profilePicSize}
+            profilePic={defaultTzktProfilePic}
+            onErrorFunction={null}
+          />
         )}
         {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
         {nickname !== null && nickname.trim().length > 0 ? (
@@ -144,11 +177,13 @@ const CollectorInfoRow = ({ collector }: any) => {
         {/* <h1 className={collectorStyle}>
             Twitter: {collector.subject.twitter}
           </h1> */}
+        <TwitterIcon twitterURL="" iconSize={iconSize} />
         <div className={`${rowDataStyle} mr-0 ml-auto`}>
           Volume: {(parseFloat(volume) / 1000000).toFixed(2)} XTZ
         </div>
       </div>
     </div>
+    </>
   )
 }
 
@@ -182,7 +217,10 @@ const Data = () => {
   return (
     <>
       {data.sales_stat.map((collector: any) => (
-        <CollectorInfoRow key={collector.subject.address} collector={collector} />
+        <CollectorInfoRow
+          key={collector.subject.address}
+          collector={collector}
+        />
       ))}
     </>
   )
