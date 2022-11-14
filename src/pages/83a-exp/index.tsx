@@ -62,8 +62,8 @@ const LastDayData = React.forwardRef((props, ref: any) => {
 
   const style = `flex items justify-center mt-10 text-2xl ${mainFont}`
 
-  // replace # with %23 when searching or objkt.com won't recognize # symbol in tag search
-  const replaceLinkHashtags = (link: string) => link.replaceAll('#', '%23')
+  // replace # with %23, replace & with %26 when searching or objkt.com won't recognize # symbol in tag search
+  const replaceLinkSymbols = (link: string) => link.replaceAll('#', '%23').replaceAll('&', '%26')
 
   if (status === 'loading') {
     return <h1 className={style}>Loading ...</h1>
@@ -108,7 +108,7 @@ const LastDayData = React.forwardRef((props, ref: any) => {
                   className="inline-flex flex-wrap mx-1 items-center"
                 >
                   <a
-                    href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkHashtags(
+                    href={`https://objkt.com/explore/tokens/1?tags=${replaceLinkSymbols(
                       filteredTag
                     )}`}
                     target="_blank"

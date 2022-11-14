@@ -18,6 +18,8 @@ export default defineNextConfig({
     domains: ['pbs.twimg.com', 'services.tzkt.io'],
   },
 
+  experimental: { images: { allowFutureImage: true } },
+
   // images: {
   //   formats: ['image/avif', 'image/webp'],
   //   remotePatterns: [

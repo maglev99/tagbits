@@ -10,6 +10,12 @@ module.exports = {
       fontFamily: {
         'dotGothic': [ 'DotGothic16', 'Helvetica', 'Arial' ],
       },
+      keyframes: {
+        load: {
+          '0%': { transform: 'translate(-400%)' },
+          '100%': { transform: 'translate(400%)' },
+        }
+      },
     },
   },
   plugins: [],
