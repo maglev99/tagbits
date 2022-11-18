@@ -17,6 +17,7 @@ import { useQuery } from '@tanstack/react-query'
 import request from 'graphql-request'
 import top100Collectors1DayQueryDocument from './queries-collectors'
 import CollectorInfo from './components/collectorInfo'
+import LatestCollection from './components/latestCollection'
 
 // Image Imports
 import City from '../index-images/City_Bkg.png'
@@ -70,7 +71,16 @@ const Data = () => {
   return (
     <>
       {data.sales_stat.map((collector: any) => (
-        <CollectorInfo key={collector.subject.address} collector={collector} />
+        <div key={`${collector.subject.address}`}>
+          <CollectorInfo
+            key={`${collector.subject.address}-info`}
+            collector={collector}
+          />
+          <LatestCollection
+            key={`${collector.subject.address}-collection`}
+            collector={collector}
+          />
+        </div>
       ))}
     </>
   )

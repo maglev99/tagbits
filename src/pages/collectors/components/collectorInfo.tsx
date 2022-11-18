@@ -30,7 +30,7 @@ const ProfilePicture = ({
       className={`overflow-hidden mx-1 w-[${profilePicSize}px] h-[${profilePicSize}px] rounded-full ${visibility}`}
     >
       <a
-        href={`https://objkt.com/profile/${walletAddress}/owned`}
+        href={`https://objkt.com/profile/${walletAddress}/activity`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -68,7 +68,7 @@ const ProfilePictureMobile = ({
       className={`overflow-hidden mx-1 w-[${profilePicSize}px] h-[${profilePicSize}px] rounded-full ${visibility}`}
     >
       <a
-        href={`https://objkt.com/profile/${walletAddress}/owned`}
+        href={`https://objkt.com/profile/${walletAddress}/activity`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -124,7 +124,7 @@ const CollectorInfo = ({ collector }: any) => {
   return (
     <>
       {/* mobile view */}
-      <div className={`${containerStyle} md:hidden`} key={rank}>
+      <div className={`${containerStyle} md:hidden`} key={`${rank}-info-mobile`}>
         <div
           className={`${centerContainerOnly} max-w-[960px] grow items-center bg-blue-200`}
         >
@@ -145,7 +145,7 @@ const CollectorInfo = ({ collector }: any) => {
             />
           )}
           <a
-            href={`https://objkt.com/profile/${walletAddress}/owned`}
+            href={`https://objkt.com/profile/${walletAddress}/activity`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -168,7 +168,7 @@ const CollectorInfo = ({ collector }: any) => {
           </a>
         </div>
       </div>
-      <div className={`${containerStyle} md:hidden`} key={rank}>
+      <div className={`${containerStyle} md:hidden`} key={`${rank}-volume-mobile`}>
         <div
           className={`${centerContainerOnly} -mt-6 max-w-[960px] grow items-center bg-blue-200`}
         >
@@ -182,7 +182,7 @@ const CollectorInfo = ({ collector }: any) => {
       </div>
 
       {/* tablet and desktop view */}
-      <div className={`${containerStyle} hidden md:flex`} key={rank}>
+      <div className={`${containerStyle} hidden md:flex`} key={`${rank}-info`}>
         <div
           className={`${centerContainerOnly} max-w-[960px] grow items-center bg-blue-200`}
         >
@@ -203,7 +203,7 @@ const CollectorInfo = ({ collector }: any) => {
             />
           )}
           <a
-            href={`https://objkt.com/profile/${walletAddress}/owned`}
+            href={`https://objkt.com/profile/${walletAddress}/activity`}
             target="_blank"
             rel="noopener noreferrer"
           >

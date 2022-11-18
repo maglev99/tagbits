@@ -15,7 +15,7 @@ export default defineNextConfig({
   swcMinify: true,
 
   images: {
-    domains: ['pbs.twimg.com', 'services.tzkt.io'],
+    domains: ['pbs.twimg.com', 'services.tzkt.io', 'ipfs.io'],
   },
 
   experimental: { images: { allowFutureImage: true } },

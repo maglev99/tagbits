@@ -30,8 +30,9 @@ query top100Collectors1DayQuery {
 			) {
 				token {
 					name
-					thumbnail_uri
 					token_id
+					display_uri
+					artifact_uri
 				}
 				timestamp
 				price
