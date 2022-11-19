@@ -29,11 +29,11 @@ const LatestCollection = ({ collector }: any) => {
 
   return (
     <div
-      className={`${containerStyle} hidden md:flex`}
+      className={`${containerStyle} flex`}
       key={`${rank}-collection`}
     >
       <div
-        className={`${centerContainerOnly} max-w-[960px] grow items-center bg-blue-200`}
+        className={`${centerContainerOnly} max-w-[960px] grow items-center grid grid-cols-3 md:grid-cols-5 gap-3 bg-blue-200`}
       >
         {/* <div>Latest Collection {tempval}</div> */}
 
