@@ -91,7 +91,7 @@ const TwitterIcon = ({ twitterURL, iconSize }: any) => (
     <a href={twitterURL} target="_blank" rel="noopener noreferrer">
       <FutureImage
         src={TwitterLogo}
-        alt="Profile Photo"
+        alt="Twitter"
         width={iconSize}
         height={iconSize}
       />

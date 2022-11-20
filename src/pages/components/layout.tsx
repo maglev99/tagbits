@@ -3,8 +3,10 @@ import React from 'react'
 import Link from 'next/link'
 
 import Image from 'next/image'
+import FutureImage from 'next/future/image'
 
 import TagbitsLogo from '../index-images/Tagbits_Logo.png'
+import TwitterLogo from '../app-icons/twitter-logo-128.png'
 
 type Props = {
   children: any
@@ -18,27 +20,46 @@ const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
 const Nav = () => (
-  <div className="z-10 top-0 flex items justify-start pt-4 ml-4 text-lg w-[250px] md:w-full lg:max-w-[1200px] lg:justify-start lg:mx-auto lg:pl-2">
-    <Link href="/">
-      {/* use button to wrap Image to avoid nextjs link and a tag errors */}
-      <button type="button">
-        <Image
-          src={TagbitsLogo}
-          alt="Logo"
-          className="pointer-events-auto cursor-pointer"
-        />
-      </button>
-    </Link>
-    <div
-      className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
-    >
-      <a
-        href="https://twitter.com/TagbitsXYZ"
-        target="_blank"
-        rel="noopener noreferrer"
+  <div className="z-10 top-0 grid grid-cols-2 pt-4 px-4 text-lg md:w-full lg:max-w-[1200px]  lg:mx-auto lg:pl-2">
+    <div className="justify-self-start bg-blue-300">
+      <Link href="/">
+        {/* use button to wrap Image to avoid nextjs link and a tag errors */}
+        <button type="button">
+          <FutureImage
+            src={TagbitsLogo}
+            alt="Logo"
+            className="pointer-events-auto cursor-pointer"
+          />
+        </button>
+      </Link>
+      <div
+        className={`${mainFont} text-xl mt-[10px] hover:underline md:text-2xl md:ml-10 md:mt-[12px] md:inline-flex  bg-green-200 align-top pt-[7px]`}
       >
-        Twitter
-      </a>
+        <a
+          href="https://twitter.com/TagbitsXYZ"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FutureImage
+            src={TwitterLogo}
+            alt="Twitter"
+            width={35}
+            height={35}
+            className="ml-2 mr-auto md:ml-0"
+          />
+        </a>
+      </div>
+    </div>
+    <div
+      className={`${mainFont} text-xl mt-[10px] justify-self-end md:text-2xl md:ml-10 md:mt-[12px] pt-[6px] mr-2 
+      md:inline-flex`}
+    >
+      <Link href="/collectors">
+        <h1 className="md:mr-12 cursor-pointer hover:underline">Collectors</h1>
+      </Link>
+      <Link href="/">
+        <h1 className="md:mr-12 cursor-pointer hover:underline mt-6 md:mt-0">Tags</h1>
+      </Link>
     </div>
     {/* <div
       className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
@@ -86,7 +107,7 @@ const Layout = ({ children }: Props) => (
       {/* h-max so that background color covers content that overflows screen size */}
       <Nav />
       {children}
-			<Footer />
+      <Footer />
     </div>
   </div>
 )

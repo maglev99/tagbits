@@ -32,7 +32,6 @@ const LatestCollection = ({ collector }: any) => {
       <div
         className={`${centerContainerOnly} max-w-[960px] grow items-center grid grid-cols-3 md:grid-cols-5 gap-3 mx-3 lg:mx-0 bg-blue-200`}
       >
-        {/* <div>Latest Collection {tempval}</div> */}
 
         {collection.map((item: any, index: any) => (
           // eslint-disable-next-line react/no-array-index-key
