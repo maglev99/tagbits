@@ -25,33 +25,45 @@ const LatestCollection = ({ collector }: any) => {
     return ''
   }
 
-	const imageSize = '300'
+  const imageSize = '300'
 
   return (
-    <div
-      className={`${containerStyle} flex`}
-      key={`${rank}-collection`}
-    >
+    <div className={`${containerStyle} flex`} key={`${rank}-collection`}>
       <div
-        className={`${centerContainerOnly} max-w-[960px] grow items-center grid grid-cols-3 md:grid-cols-5 gap-3 bg-blue-200`}
+        className={`${centerContainerOnly} max-w-[960px] grow items-center grid grid-cols-3 md:grid-cols-5 gap-3 mx-3 lg:mx-0 bg-blue-200`}
       >
         {/* <div>Latest Collection {tempval}</div> */}
 
         {collection.map((item: any, index: any) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={`${item.fa_contract}-${index}`}>
-            {/* <div>Image:  {replaceIPFSLink(item.token.thumbnail_uri)}</div> */}
-            {/* <div>Latest Collection {tempval}</div> */}
-            <FutureImage
-              unoptimized
-              src={replaceIPFSLink(item.token.display_uri)}
-              alt={item.token.display_uri}
-              width={imageSize}
-              height={imageSize}
-              // className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
-              // onError={() => onErrorFunction()}
-              // onLoadingComplete={() => setVisibility('')}
-            />
+            <a
+              href={`https://objkt.com/asset/${item.fa_contract}/${item.token.token_id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FutureImage
+                unoptimized
+                src={replaceIPFSLink(item.token.display_uri)}
+                alt={item.token.display_uri}
+                width={imageSize}
+                height={imageSize}
+                // className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
+                // onError={() => onErrorFunction()}
+                // onLoadingComplete={() => setVisibility('')}
+              />
+            </a>
+						<a
+              href={`https://objkt.com/asset/${item.fa_contract}/${item.token.token_id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+							className='hover:underline'
+            >
+            <h1 className="text-[17px]">{item.token.name}</h1>
+            <h1 className="text-[17px] ">
+              for {(parseFloat(item.price) / 1000000).toFixed(2)} XTZ
+            </h1>
+						</a>
           </div>
         ))}
       </div>
