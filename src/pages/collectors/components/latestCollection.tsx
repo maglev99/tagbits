@@ -58,8 +58,8 @@ const LatestCollection = ({ collector }: any) => {
               rel="noopener noreferrer"
 							className='hover:underline'
             >
-            <h1 className="text-[17px]">{item.token.name}</h1>
-            <h1 className="text-[17px] ">
+            <h1 className="text-[17px] break-all">{item.token.name}</h1>
+            <h1 className="text-[17px] break-all">
               for {(parseFloat(item.price) / 1000000).toFixed(2)} XTZ
             </h1>
 						</a>

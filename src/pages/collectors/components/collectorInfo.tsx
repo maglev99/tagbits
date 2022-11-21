@@ -209,16 +209,16 @@ const CollectorInfo = ({ collector }: any) => {
           >
             {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
             {nickname !== null && nickname.trim().length > 0 ? (
-              <h1 className={`${rowDataStyle} hover:underline ml-2`}>
+              <h1 className={`${rowDataStyle} hover:underline ml-2 break-all`}>
                 {nickname}
               </h1>
             ) : tzDomain !== null && tzDomain.trim().length > 0 ? (
-              <h1 className={`${rowDataStyle} hover:underline ml-2`}>
+              <h1 className={`${rowDataStyle} hover:underline ml-2 break-all`}>
                 {tzDomain}
               </h1>
             ) : (
               <h1
-                className={`${rowDataStyle} hover:underline ml-2`}
+                className={`${rowDataStyle} hover:underline ml-2 break-all`}
               >{`${walletAddress.slice(0, 5)}...${walletAddress.slice(
                 -5
               )}`}</h1>
@@ -227,7 +227,7 @@ const CollectorInfo = ({ collector }: any) => {
           {twitter !== null && (
             <TwitterIcon twitterURL={twitter} iconSize={iconSize} />
           )}
-          <div className={`${rowDataStyle} mr-0 ml-auto`}>
+          <div className={`${rowDataStyle} mr-0 ml-auto break-all`}>
             Volume: {(parseFloat(volume) / 1000000).toFixed(2)} XTZ
           </div>
         </div>
