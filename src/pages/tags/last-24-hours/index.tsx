@@ -10,13 +10,13 @@ import { io } from 'socket.io-client'
 import { useQueryClient } from '@tanstack/react-query'
 
 import z from 'zod'
-import useGQLQuery from '../../../graphql/useGQLQuery'
+import useGQLQuery from '../../../../graphql/useGQLQuery'
 
-import { GET_LATEST_24HOURS_TAGRANKLIST } from '../../queries'
+import { GET_LATEST_24HOURS_TAGRANKLIST } from '../../../queries'
 
 // Image Imports
-import City from '../index-images/City_Bkg.png'
-import City_Mobile from '../index-images/City_Bkg_Mobile.png'
+import City from '../../index-images/City_Bkg.png'
+import City_Mobile from '../../index-images/City_Bkg_Mobile.png'
 
 // Component Imports
 import Filters from '../components/filters'
@@ -52,7 +52,8 @@ const Last24HoursData = () => {
   const style = `flex items justify-center mt-10 text-2xl ${mainFont}`
 
   // replace # with %23, replace & with %26 when searching or objkt.com won't recognize # symbol in tag search
-  const replaceLinkSymbols = (link: string) => link.replaceAll('#', '%23').replaceAll('&', '%26')
+  const replaceLinkSymbols = (link: string) =>
+    link.replaceAll('#', '%23').replaceAll('&', '%26')
 
   if (status === 'loading') {
     return <h1 className={style}>Loading ...</h1>
@@ -85,7 +86,9 @@ const Last24HoursData = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(item?.count)} hover:underline max-w-sm truncate text-ellipsis"`}
+                  className={`"font-sans lg:font-light mx-2 px-2 py-1 rounded-xl my-2 text-[#F3F3F3] ${chooseTagColor(
+                    item?.count
+                  )} hover:underline max-w-sm truncate text-ellipsis"`}
                 >
                   {filteredTag}
                 </a>
@@ -164,7 +167,7 @@ const Home: NextPage = () => {
       <div
         className={`${centerStyle} mt-20 pb-0 ${mainFont} text-2xl hover:underline`}
       >
-        <Link href="/last-24-hours">Return to top</Link>
+        <Link href="/tags/last-24-hours">Return to top</Link>
       </div>
     </>
   )

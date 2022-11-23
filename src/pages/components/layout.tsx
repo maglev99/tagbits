@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import Image from 'next/image'
 import FutureImage from 'next/future/image'
@@ -19,57 +20,72 @@ const centerStyle = 'max-w-[1200px] flex justify-center mx-auto'
 // const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
-const Nav = () => (
-  <div className="z-10 top-0 grid grid-cols-2 pt-4 px-4 text-lg md:w-full lg:max-w-[1200px]  lg:mx-auto lg:pl-2">
-    <div className="justify-self-start bg-blue-300">
-      <Link href="/">
-        {/* use button to wrap Image to avoid nextjs link and a tag errors */}
-        <button type="button">
-          <FutureImage
-            src={TagbitsLogo}
-            alt="Logo"
-            className="pointer-events-auto cursor-pointer"
-          />
-        </button>
-      </Link>
-      <div
-        className={`${mainFont} text-xl mt-[10px] hover:underline md:text-2xl md:ml-10 md:mt-[12px] md:inline-flex  bg-green-200 align-top pt-[7px]`}
-      >
-        <a
-          href="https://twitter.com/TagbitsXYZ"
-          target="_blank"
-          rel="noopener noreferrer"
+// style used if current page is active link
+const activeLinkStyle = 'underline'
+
+const Nav = () => {
+  const router = useRouter()
+
+  return (
+    <div className="z-10 top-0 grid grid-cols-2 pt-4 px-4 text-lg md:w-full lg:max-w-[1200px]  lg:mx-auto lg:pl-2">
+      <div className="justify-self-start">
+        <Link href="/">
+          {/* use button to wrap Image to avoid nextjs link and a tag errors */}
+          <button type="button">
+            <FutureImage
+              src={TagbitsLogo}
+              alt="Logo"
+              className="pointer-events-auto cursor-pointer"
+            />
+          </button>
+        </Link>
+        <div
+          className={`${mainFont} text-xl mt-[10px] hover:underline md:text-2xl md:ml-10 md:mt-[7px] md:inline-flex align-top pt-[7px]`}
         >
-          <FutureImage
-            src={TwitterLogo}
-            alt="Twitter"
-            width={35}
-            height={35}
-            className="ml-2 mr-auto md:ml-0"
-          />
-        </a>
+          <a
+            href="https://twitter.com/TagbitsXYZ"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FutureImage
+              src={TwitterLogo}
+              alt="Twitter"
+              width={35}
+              height={35}
+              className="ml-2 mr-auto md:ml-0"
+            />
+          </a>
+        </div>
       </div>
-    </div>
-    <div
-      className={`${mainFont} text-xl mt-[10px] justify-self-end md:text-2xl md:ml-10 md:mt-[12px] pt-[6px] mr-2 
+      <div
+        className={`${mainFont} text-xl mt-[10px] justify-self-end md:text-2xl md:ml-10 md:mt-[12px] pt-[6px] mr-2 
       md:inline-flex`}
-    >
-      <Link href="/collectors">
-        <h1 className="md:mr-12 cursor-pointer hover:underline">Collectors</h1>
-      </Link>
-      <Link href="/">
-        <h1 className="md:mr-12 cursor-pointer hover:underline mt-6 md:mt-0">Tags</h1>
-      </Link>
-    </div>
-    {/* <div
+      >
+        <Link href="/">
+          <h1
+            className={`md:mr-12 cursor-pointer hover:underline ${
+              router.pathname === '/' ? activeLinkStyle : ''
+            }`}
+          >
+            Collectors
+          </h1>
+        </Link>
+        <Link href="/tags">
+          <h1 className={`md:mr-12 cursor-pointer hover:underline mt-6 md:mt-0 ${(router.pathname === '/tags' || router.pathname === '/tags/last-24-hours') ? activeLinkStyle : ''}`}>
+            Tags
+          </h1>
+        </Link>
+      </div>
+      {/* <div
       className={`${mainFont} text-xl mt-[10px] ml-6 hover:underline md:text-2xl md:ml-10 md:mt-[12px]`}
     >
       <a href="/" target="_blank" rel="noopener noreferrer">
         Discord
       </a>
     </div> */}
-  </div>
-)
+    </div>
+  )
+}
 
 const Footer = () => (
   <>

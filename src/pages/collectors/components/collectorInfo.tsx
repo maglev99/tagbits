@@ -18,7 +18,7 @@ const ProfilePicture = ({
   const [isLoaded, setIsLoaded] = useState(false)
 
   const loaderStyle =
-    'bg-blue-700 after:block after:shadow-[0_0_150px_80px_rgba(254,254,254)] after:animate-[load_2.5s_infinite]' // after:animate-[load_1s_infinite]
+    'bg-grey-500 after:block after:shadow-[0_0_150px_80px_rgba(254,254,254)] after:animate-[load_2.5s_infinite]' // after:animate-[load_1s_infinite]
 
   const [visibility, setVisibility] = useState(`${loaderStyle}`)
 
@@ -56,7 +56,7 @@ const ProfilePictureMobile = ({
   const [isLoaded, setIsLoaded] = useState(false)
 
   const loaderStyle =
-    'bg-blue-700 after:block after:shadow-[0_0_150px_80px_rgba(254,254,254)] after:animate-[load_2.5s_infinite]' // after:animate-[load_1s_infinite]
+    'bg-grey-500 after:block after:shadow-[0_0_150px_80px_rgba(254,254,254)] after:animate-[load_2.5s_infinite]' // after:animate-[load_1s_infinite]
 
   const [visibility, setVisibility] = useState(`${loaderStyle}`)
 
@@ -100,8 +100,8 @@ const TwitterIcon = ({ twitterURL, iconSize }: any) => (
 )
 
 const CollectorInfo = ({ collector }: any) => {
-  const rowDataStyle = `bg-green-200`
-  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont} bg-gray-200`
+  const rowDataStyle = ``
+  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont}`
 
   const [rank] = useState(collector.rank)
   const [profilePic, setProfilePic] = useState(collector.subject.logo)
@@ -126,7 +126,7 @@ const CollectorInfo = ({ collector }: any) => {
       {/* mobile view */}
       <div className={`${containerStyle} md:hidden`} key={`${rank}-info-mobile`}>
         <div
-          className={`${centerContainerOnly} max-w-[960px] grow items-center bg-blue-200`}
+          className={`${centerContainerOnly} max-w-[960px] grow items-center`}
         >
           <h1 className={`${rowDataStyle} w-11 ml-4`}>{rank}.</h1>
           {profilePic !== null &&
@@ -170,7 +170,7 @@ const CollectorInfo = ({ collector }: any) => {
       </div>
       <div className={`${containerStyle} md:hidden`} key={`${rank}-volume-mobile`}>
         <div
-          className={`${centerContainerOnly} -mt-6 max-w-[960px] grow items-center bg-blue-200`}
+          className={`${centerContainerOnly} -mt-6 max-w-[960px] grow items-center `}
         >
           <div className={`${rowDataStyle} ml-4 mr-1`}>
             Volume: {(parseFloat(volume) / 1000000).toFixed(2)} XTZ
@@ -184,7 +184,7 @@ const CollectorInfo = ({ collector }: any) => {
       {/* tablet and desktop view */}
       <div className={`${containerStyle} hidden md:flex`} key={`${rank}-info`}>
         <div
-          className={`${centerContainerOnly} max-w-[960px] grow items-center bg-blue-200`}
+          className={`${centerContainerOnly} max-w-[960px] grow items-center `}
         >
           <h1 className={`${rowDataStyle} w-11`}>{rank}.</h1>
           {profilePic !== null &&

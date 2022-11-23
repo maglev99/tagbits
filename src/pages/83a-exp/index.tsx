@@ -16,7 +16,7 @@ import useGQLQuery from '../../../graphql/useGQLQuery'
 
 import { GET_LATEST_DAY_TAGRANKLIST } from '../../queries'
 
-import chooseTagColor from '../components/utils/tagColor'
+import chooseTagColor from '../tags/components/utils/tagColor'
 
 // Image Imports
 // import TagbitsLogo from '../index-images/Tagbits_Logo.png'
@@ -47,7 +47,11 @@ const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 
 const lastDay = (daysAgo: number) => {
   const currentDate = new Date()
-  const now = date.format(date.addDays(currentDate, -daysAgo), 'YYYY-MM-DD', true)
+  const now = date.format(
+    date.addDays(currentDate, -daysAgo),
+    'YYYY-MM-DD',
+    true
+  )
 
   return now
 }
@@ -63,7 +67,8 @@ const LastDayData = React.forwardRef((props, ref: any) => {
   const style = `flex items justify-center mt-10 text-2xl ${mainFont}`
 
   // replace # with %23, replace & with %26 when searching or objkt.com won't recognize # symbol in tag search
-  const replaceLinkSymbols = (link: string) => link.replaceAll('#', '%23').replaceAll('&', '%26')
+  const replaceLinkSymbols = (link: string) =>
+    link.replaceAll('#', '%23').replaceAll('&', '%26')
 
   if (status === 'loading') {
     return <h1 className={style}>Loading ...</h1>

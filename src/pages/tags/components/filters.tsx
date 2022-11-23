@@ -17,10 +17,10 @@ const Filters = () => {
     className={`${centerContainerOnly} max-w-[960px] pl-4 justify-start my-8`}
   >
     <div>
-      <Link href="/"><a className={`${filterButtonStyle} ${router.pathname === "/" ? activeFilterStyle : inactiveFilterStyle}`}>Last Hour</a></Link>
+      <Link href="/tags"><a className={`${filterButtonStyle} ${router.pathname === "/tags" ? activeFilterStyle : inactiveFilterStyle}`}>Last Hour</a></Link>
     </div>
     <div>
-      <Link href="/last-24-hours"><a className={`${filterButtonStyle} ${router.pathname === "/last-24-hours" ? activeFilterStyle : inactiveFilterStyle}`}>Last 24 Hours</a></Link>
+      <Link href="/tags/last-24-hours"><a className={`${filterButtonStyle} ${router.pathname === "/tags/last-24-hours" ? activeFilterStyle : inactiveFilterStyle}`}>Last 24 Hours</a></Link>
     </div>
   </div>
 	)
