@@ -5,6 +5,8 @@ import React, { Fragment, useState } from 'react'
 // import Head from 'next/head'
 
 import FutureImage from 'next/future/image'
+// import { LazyLoadImage } from 'react-lazy-load-image-component'
+
 import TwitterLogo from '../../app-icons/twitter-logo-128.png'
 
 const mainFont = 'font-dotGothic text-tb-text antialiased font-normal'
@@ -43,6 +45,15 @@ const ProfilePicture = ({
           onError={() => onErrorFunction()}
           onLoadingComplete={() => setVisibility('')}
         />
+        {/* <LazyLoadImage
+          alt="Profile Photo"
+          src={profilePic} // use normal <img> attributes as props
+          height={profilePicSize}
+          width={profilePicSize}
+					className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
+          afterLoad={() => setVisibility('')}
+          onError={() => onErrorFunction()}
+        /> */}
       </a>
     </div>
   )
@@ -124,7 +135,10 @@ const CollectorInfo = ({ collector }: any) => {
   return (
     <>
       {/* mobile view */}
-      <div className={`${containerStyle} md:hidden`} key={`${rank}-info-mobile`}>
+      <div
+        className={`${containerStyle} md:hidden`}
+        key={`${rank}-info-mobile`}
+      >
         <div
           className={`${centerContainerOnly} max-w-[960px] grow items-center`}
         >
@@ -168,14 +182,17 @@ const CollectorInfo = ({ collector }: any) => {
           </a>
         </div>
       </div>
-      <div className={`${containerStyle} md:hidden`} key={`${rank}-volume-mobile`}>
+      <div
+        className={`${containerStyle} md:hidden`}
+        key={`${rank}-volume-mobile`}
+      >
         <div
           className={`${centerContainerOnly} -mt-6 max-w-[960px] grow items-center `}
         >
           <div className={`${rowDataStyle} ml-4 mr-1`}>
             Volume: {(parseFloat(volume) / 1000000).toFixed(2)} XTZ
           </div>
-					{twitter !== null && (
+          {twitter !== null && (
             <TwitterIcon twitterURL={twitter} iconSize={iconSize} />
           )}
         </div>

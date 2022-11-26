@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react'
 // import FutureImage from 'next/future/image'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
+import ContentLoader from 'react-content-loader'
+
 const mainFont = 'font-dotGothic text-tb-text antialiased font-normal'
 const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 
@@ -23,9 +25,9 @@ const ImageLoader = ({ item }: any) => {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       callMyTimeOut()
     } else if (imageLoaded.current === false) {
-      // console.log('display url failed to load for: ', item.token.name)
-      // console.log('switching to artiface url instead')
-      setImageURL(switchToArtifactURI(item.token))
+      console.log('display url failed to load for: ', item.token.name)
+      console.log('switching to thumbnail url instead')
+      setImageURL(switchToThumbnailURI(item.token))
     }
   }
 
@@ -36,21 +38,37 @@ const ImageLoader = ({ item }: any) => {
   const onImageLoaded = () => {
     imageLoaded.current = true
     clearTimeout(myTimeout())
-    // console.log('timeout cleared')
+
+    setlazyImageVisibility(visibleStyle)
+    setContentLoaderVisibility(hiddenStyle)
+
+    // console.log('image loaded, timeout cleared')
   }
 
-  // switch to artifactURI if display_uri can't be loaded
-  const switchToArtifactURI = (token: any) => {
-    const newLink = token.artifact_uri.replaceAll(
+  // switch to thumbnailURI if display_uri can't be loaded
+  const switchToThumbnailURI = (token: any) => {
+    const newLink = token.thumbnail_uri.replaceAll(
       'ipfs://',
       'https://ipfs.io/ipfs/'
     )
     return newLink
   }
 
+  // switch to artifactURI if display_uri can't be loaded
+  // const switchToArtifactURI = (token: any) => {
+  //   const newLink = token.artifact_uri.replaceAll(
+  //     'ipfs://',
+  //     'https://ipfs.io/ipfs/'
+  //   )
+  //   return newLink
+  // }
+
   const retryLoadOnError = () => {
-    setImageURL(switchToArtifactURI(item.token))
-    // console.log('error occured, switching to artiface url instead for token: ', item.token.name)
+    setImageURL(switchToThumbnailURI(item.token))
+    console.log(
+      'error occured, switching to artiface url instead for token: ',
+      item.token.name
+    )
   }
 
   const replaceIPFSLink = (token: any) => {
@@ -77,6 +95,14 @@ const ImageLoader = ({ item }: any) => {
 
   const [imageURL, setImageURL] = useState(replaceIPFSLink(item.token))
 
+  const invisibleStyle = 'w-0 h-0' // set image initially to width 0 height 0 so that lazy load still triggered but not visible
+  const visibleStyle = ''
+  const hiddenStyle = 'hidden' // use hidden to remove content loader from DOM completely when image loaded
+
+  const [lazyImageVisibility, setlazyImageVisibility] = useState(invisibleStyle)
+  const [contentLoaderVisibility, setContentLoaderVisibility] =
+    useState(visibleStyle)
+
   return (
     // <FutureImage
     //   key={`${loadCount}`}
@@ -89,18 +115,34 @@ const ImageLoader = ({ item }: any) => {
     //   // onError={() => retryLoadOnError()}
     //   // onLoadingComplete={() => clearMyTimeOut()}
     // />
-
-    <LazyLoadImage
-      alt="Image"
-      height={imageSize}
-      src={imageURL} // use normal <img> attributes as props
-      width={imageSize}
-      beforeLoad={() => callMyTimeOut()}
-      afterLoad={() => onImageLoaded()}
-      onError={() => retryLoadOnError()}
-    />
+    <div className="grid grid-cols-1">
+      <LazyLoadImage
+        alt="Image"
+        height={imageSize}
+        src={imageURL} // use normal <img> attributes as props
+        width={imageSize}
+        // placeholder={<SkeletonLoader />}
+        beforeLoad={() => callMyTimeOut()}
+        afterLoad={() => onImageLoaded()}
+        onError={() => retryLoadOnError()}
+        className={lazyImageVisibility}
+      />
+      <SkeletonLoader visibilityStyle={contentLoaderVisibility} />
+    </div>
   )
 }
+
+const SkeletonLoader = ({ visibilityStyle }: any) => (
+  <ContentLoader
+    speed={2}
+    viewBox="0 0 400 400"
+    backgroundColor="#b8b8b8"
+    foregroundColor="#ecebeb"
+    className={visibilityStyle}
+  >
+    <rect x="0" y="0" rx="0" ry="0" width="100%" height="400" />
+  </ContentLoader>
+)
 
 const LatestCollection = ({ collector }: any) => {
   const [rank] = useState(collector.rank)

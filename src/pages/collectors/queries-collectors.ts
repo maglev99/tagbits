@@ -33,6 +33,7 @@ query top100Collectors1DayQuery {
 					token_id
 					display_uri
 					artifact_uri
+					thumbnail_uri
 				}
 				timestamp
 				price
