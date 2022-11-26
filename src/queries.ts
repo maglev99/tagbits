@@ -1,51 +1,38 @@
-import { gql } from '@apollo/client'
+import gql from 'graphql-tag'
 
-const AllLinksQuery = gql`
+const TEST_QUERY = gql`
   query {
-    links {
-      id
-      title
-      url
-      description
-      imageUrl
-      category
-    }
+    testQuery
   }
 `
 
-export const TokenQuery = gql`
-  query TokenQuery($pk: bigint, $gte: timestamptz, $lt: timestamptz) {
-    token(
-      where: {
-        pk: { _gt: $pk }
-        timestamp: { _is_null: false, _gte: $gte, _lt: $lt }
-      }
-      order_by: { timestamp: asc, pk: asc }
-    ) {
-      pk
-      timestamp
-      tags {
-        tag {
-          name
-        }
-      }
-    }
-  }
+export const GET_LATEST_HOURLY_TAGRANKLIST = gql`
+query {
+	getLatestHourlyTagRankList {
+		tags
+		count
+	}
+}
 `
 
-export const TagRankQuery = gql`
-  query {
-    fetchTagsRanked {
-      name
-      count
-    }
-  }
+export const GET_LATEST_24HOURS_TAGRANKLIST = gql`
+query {
+	getLatest24HoursTagRankList {
+		tags
+		count
+	}
+}
 `
 
-export const UPDATE_TOKEN_LIST = gql`
-  query {
-    updateTokenList
-  }
+export const GET_LATEST_DAY_TAGRANKLIST = gql`
+query {
+	getLatestDayTagRankList {
+		tags
+		count
+	}
+}
 `
 
-export default AllLinksQuery
+export default TEST_QUERY
+
+

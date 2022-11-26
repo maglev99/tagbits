@@ -1,25 +1,26 @@
-import { gql } from 'apollo-server-micro'
+import gql from 'graphql-tag'
 
 const typeDefs = gql`
   type Query {
-    tokens: [Token]
-    updateTokenList: String
-    fetchTagsRanked: [TagRank]
-  }
-
-  type Token {
-    pk: String
-    timestamp: String
-    tags: [Tag]
-  }
-
-  type Tag {
-    name: String
+    testQuery: String
+    getLatestHourlyTagRankList: [TagRank]
+    getLatest24HoursTagRankList: [TagRank]
+    getLatestDayTagRankList: [TagRank]
   }
 
   type TagRank {
-    name:  String
+    tags: [String]
     count: Int
   }
 `
 export default typeDefs
+
+// Currently not used since collector info retrieved directly from react query via gql
+// type Collector {
+//   rank: Int
+//   volume: Float
+//   address: String
+//   alias: String
+//   profilePicLink: String
+//   twitter: String
+// }

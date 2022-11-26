@@ -1,70 +1,97 @@
-// import { TagRank } from '@prisma/client'
+import z from 'zod'
 import prisma from '../src/server/db/client'
-// import { Context } from './context'
 
-import { TokenQuery } from '../src/queries'
-import apolloClient from '../src/lib/apollo'
-
-const UpdateTokenQuery = async () => {
-  // console.log('updating token query')
-
-  // const { data } = await useQuery(TokenQuery, {
-  //   context: { clientName: 'objkt-api' },
-  // })
-
-  const { data } = await apolloClient.query({
-    query: TokenQuery,
-    context: { clientName: 'objkt-api' },
-    variables: {
-      pk: 0,
-      gte: '2022-09-06T00:00:29+00:00',
-      lt: '2022-09-06T00:10:00+00:00',
-    },
+const tagRankListValidator = z
+  .object({
+    tags: z.string().array(),
+    count: z.number(),
   })
+  .array()
 
-  console.log('token data', data)
+type TagRankList = z.infer<typeof tagRankListValidator>
 
-  return data
-}
+const tagRankValidator = z.object({
+  tags: z.string().array(),
+  count: z.number(),
+})
+
+type TagRank = z.infer<typeof tagRankValidator>
 
 const resolvers = {
   Query: {
-    // ISSUE: context currently not working as cannot read prisma in context.prisma
-    // eslint-disable-next-line @typescript-eslint/return-await
-    // links: async (context: Context) => await context.prisma.link.findMany(),
+    testQuery: async () => 'test query returned',
 
-    // links: async () => prisma.link.findMany(),
-
-    tokens: async () => UpdateTokenQuery(),
-
-    updateTokenList: async () => {
-      const data = await UpdateTokenQuery()
-      console.log('data', data)
-      return data.token[0].pk
-    },
-
-    fetchTagsRanked: async () => {
-      const rawData: any = await prisma.$queryRaw`
-      SELECT UNNEST(tags) as name, COUNT(*) as count FROM "Token"
-      GROUP BY name
-      ORDER BY count DESC, name
+    getLatestHourlyTagRankList: async () => {
+      const rawData: TagRankList = await prisma.$queryRaw`
+      SELECT count, array_agg(name ORDER BY UPPER(name) ASC) as tags FROM "TagRank"
+      WHERE "tagRankListId" = 
+        (
+          SELECT id FROM "TagRankList"
+          WHERE type = 'HOUR'
+          ORDER BY start DESC
+          LIMIT 1
+        )
+      GROUP BY count 
+      ORDER BY count DESC
       `
       // convert rawData type to match gql schema
-      const data = rawData.map((tag: any) => ({
-        name: tag.name,
-        count: Number(tag.count.toString())
+      const data = rawData.map((item: TagRank) => ({
+        tags: item.tags,
+        count: Number(item.count.toString()),
       }))
       return data
     },
 
-    // fetchTokensRanked: async () => {
-    //   console.log('calling fetch token ranked query')
-    //   const data = (await prisma.token.findMany()).map((token) => ({
-    //     name: token.pk.toString(), // convert pk to string since GraphQL does not support BigInt (type Token in schema.ts)
-    //     count: 0
-    //   }))
-    //   return data
-    // },
+    getLatest24HoursTagRankList: async () => {
+      const rawData: TagRankList = await prisma.$queryRaw`
+      SELECT total_count as count, array_agg(name ORDER BY UPPER(name) ASC) as tags FROM 
+      (SELECT sum(count) as total_count, name FROM "TagRank"
+      WHERE "tagRankListId" IN 
+              (
+                SELECT id FROM "TagRankList"
+                WHERE type = 'HOUR'
+                ORDER BY start DESC
+                LIMIT 24
+              )
+      GROUP BY name 
+      ORDER BY total_count DESC) as SummedList
+      GROUP BY total_count
+      ORDER BY total_count DESC
+      `
+      // convert rawData type to match gql schema
+      const data = rawData.map((item: TagRank) => ({
+        tags: item.tags,
+        count: Number(item.count.toString()),
+      }))
+      return data
+    },
+
+    getLatestDayTagRankList: async () => {
+      const rawData: TagRankList = await prisma.$queryRaw`
+      SELECT total_count as count, array_agg(name ORDER BY UPPER(name) ASC) as tags FROM 
+      (SELECT sum(count) as total_count, name FROM "TagRank"
+      WHERE "tagRankListId" IN 
+              (
+                SELECT id FROM "TagRankList"
+                WHERE "start" >= TO_TIMESTAMP((CURRENT_DATE - 1 || ' ' || '00:00:00'), 'YYYY-MM-DD HH24:00:00')
+                AND "end" <= TO_TIMESTAMP((CURRENT_DATE || ' ' || '00:00:00'), 'YYYY-MM-DD HH24:00:00')
+                AND type = 'HOUR'
+                ORDER BY start DESC
+              )
+      GROUP BY name 
+      ORDER BY total_count DESC
+      LIMIT 100
+      ) as SummedList
+      GROUP BY total_count
+      ORDER BY total_count DESC
+      `
+      // convert rawData type to match gql schema
+      const data = rawData.map((item: TagRank) => ({
+        tags: item.tags,
+        count: Number(item.count.toString()),
+      }))
+      return data
+    },
   },
 }
 
