@@ -15,7 +15,7 @@ import { useQuery } from '@tanstack/react-query'
 
 // graphql imports
 import request from 'graphql-request'
-import top100Collectors1DayQueryDocument from './collectors/queries-collectors'
+import top100Collectors1DayQueryDocument from '../queries-collectors'
 import CollectorInfo from './collectors/components/collectorInfo'
 import LatestCollection from './collectors/components/latestCollection'
 
@@ -72,14 +72,18 @@ const Data = () => {
     <>
       {data.sales_stat.map((collector: any) => (
         <div key={`${collector.subject.address}`}>
-          <CollectorInfo
-            key={`${collector.subject.address}-info`}
-            collector={collector}
-          />
-          <LatestCollection
-            key={`${collector.subject.address}-collection`}
-            collector={collector}
-          />
+          {collector && (
+            <CollectorInfo
+              key={`${collector.subject.address}-info`}
+              collector={collector}
+            />
+          )}
+          {collector && (
+            <LatestCollection
+              key={`${collector.subject.address}-collection`}
+              collector={collector}
+            />
+          )}
         </div>
       ))}
     </>
