@@ -194,7 +194,22 @@ const LatestCollection = ({ collector }: any) => {
               rel="noopener noreferrer"
               className="hover:underline"
             >
-              <h1 className="text-[17px] break-all">{item.token.name}</h1>
+              {/* display text concat for mobile and desktop sizes (mobile 52 char desktop 60 char) */}
+              <h1 className="text-[17px] break-all md:hidden">
+                {`${
+                  item.token.name && item.token.name?.length > 52
+                    ? item.token.name?.slice(0, 52).concat('...')
+                    : item.token.name
+                }`}
+              </h1>
+
+              <h1 className="text-[17px] break-all hidden md:flex">
+                {`${
+                  item.token.name && item.token.name?.length > 60
+                    ? item.token.name?.slice(0, 60).concat('...')
+                    : item.token.name
+                }`}
+              </h1>
               <h1 className="text-[17px] break-all">
                 for {(parseFloat(item.price) / 1000000).toFixed(2)} XTZ
               </h1>
