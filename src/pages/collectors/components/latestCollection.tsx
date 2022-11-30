@@ -171,7 +171,7 @@ const LatestCollection = ({ collector }: any) => {
   const [rank] = useState(collector?.rank)
   const [collection] = useState(collector?.subject.events_recipient)
 
-  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont}`
+  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont} min-h-[0px] md:min-h-[350px]`
 
   return (
     <div className={`${containerStyle} flex`} key={`${rank}-collection`}>
