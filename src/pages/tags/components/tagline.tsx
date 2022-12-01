@@ -19,10 +19,12 @@ const Tagline = () => (
 				 rel="noopener noreferrer"
 				 className="hover:underline"
 			 >
-				 objkt.com
+				 objkt.com 
 			 </a>{' '}
 		 </h1>
 	 </div>
+	 <h1 className={`mt-3 md:mt-6 ${mainFont} text-l md:text-2xl lg:text-2xl ${centerContainerOnly} max-w-[960px] px-4 justify-start`}>
+		Click tags to see newest pieces</h1>
 	 </>
 	)
 
