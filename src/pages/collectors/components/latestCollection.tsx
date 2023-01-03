@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 // import FutureImage from 'next/future/image'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
@@ -27,7 +27,7 @@ const ImageLoader = ({ item }: any) => {
     } else if (imageLoaded.current === false) {
       console.log('display url failed to load for: ', item.token.name)
       console.log('switching to thumbnail url instead')
-      setImageURL(switchToThumbnailURI(item.token))
+      setImageURL(switchToFallBackURI(item.token))
     }
   }
 
@@ -45,9 +45,24 @@ const ImageLoader = ({ item }: any) => {
     // console.log('image loaded, timeout cleared')
   }
 
-  // switch to thumbnailURI if display_uri can't be loaded
+  // switch to displayURI if display_uri can't be loaded or thumbnailURI if displayURI not found
+  const switchToFallBackURI = (token: any) => {
+    if (
+      token.display_uri !== null &&
+      typeof token.display_uri !== 'undefined'
+    ) {
+      const newLink = token.display_uri?.replaceAll(
+        'ipfs://',
+        'https://ipfs.io/ipfs/'
+      )
+      return newLink
+    }
+
+    return switchToThumbnailURI(token)
+  }
+
   const switchToThumbnailURI = (token: any) => {
-    const newLink = token.thumbnail_uri.replaceAll(
+    const newLink = token.thumbnail_uri?.replaceAll(
       'ipfs://',
       'https://ipfs.io/ipfs/'
     )
@@ -64,36 +79,44 @@ const ImageLoader = ({ item }: any) => {
   // }
 
   const retryLoadOnError = () => {
-    setImageURL(switchToThumbnailURI(item.token))
+    setImageURL(switchToFallBackURI(item.token))
     console.log(
       'error occured, switching to artiface url instead for token: ',
       item.token.name
     )
   }
 
-  const replaceIPFSLink = (token: any) => {
-    if (
-      token.display_uri !== null &&
-      typeof token.display_uri !== 'undefined'
-    ) {
-      // replace link with correct header for loading directly from image
-      const newLink = token.display_uri.replaceAll(
-        'ipfs://',
-        'https://ipfs.io/ipfs/'
-      )
-      return newLink
-    }
-
-    // if display_uri is null use artifact_uri
-    // replace link with correct header for loading directly from image
-    const newLink = token.artifact_uri.replaceAll(
-      'ipfs://',
-      'https://ipfs.io/ipfs/'
-    )
-    return newLink
+  const generageImageLink = () => {
+    const imageLink = `${process.env.NEXT_PUBLIC_THUMBNAIL_CDN_URL}/${item.fa_contract}/${item.token.token_id}/thumb288`
+    return imageLink
   }
 
-  const [imageURL, setImageURL] = useState(replaceIPFSLink(item.token))
+  // process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL
+
+  // const replaceIPFSLink = (token: any) => {
+  //   if (
+  //     token.display_uri !== null &&
+  //     typeof token.display_uri !== 'undefined'
+  //   ) {
+  //     // replace link with correct header for loading directly from image
+  //     const newLink = token.display_uri.replaceAll(
+  //       'ipfs://',
+  //       'https://ipfs.io/ipfs/'
+  //     )
+  //     return newLink
+  //   }
+
+  //   // if display_uri is null use artifact_uri
+  //   // replace link with correct header for loading directly from image
+  //   const newLink = token.artifact_uri.replaceAll(
+  //     'ipfs://',
+  //     'https://ipfs.io/ipfs/'
+  //   )
+  //   return newLink
+  // }
+
+  // const [imageURL, setImageURL] = useState(replaceIPFSLink(item.token))
+  const [imageURL, setImageURL] = useState(generageImageLink())
 
   const invisibleStyle = 'w-0 h-0' // set image initially to width 0 height 0 so that lazy load still triggered but not visible
   const visibleStyle = ''
@@ -145,17 +168,17 @@ const SkeletonLoader = ({ visibilityStyle }: any) => (
 )
 
 const LatestCollection = ({ collector }: any) => {
-  const [rank] = useState(collector.rank)
-  const [collection] = useState(collector.subject.events_recipient)
+  const [rank] = useState(collector?.rank)
+  const [collection] = useState(collector?.subject.events_recipient)
 
-  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont}`
+  const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont} min-h-[0px] md:min-h-[350px]`
 
   return (
     <div className={`${containerStyle} flex`} key={`${rank}-collection`}>
       <div
         className={`${centerContainerOnly} max-w-[960px] grow items-center grid grid-cols-3 md:grid-cols-5 gap-3 mx-3 lg:mx-0 `}
       >
-        {collection.map((item: any, index: any) => (
+        {collection?.map((item: any, index: any) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={`${item.fa_contract}-${index}`}>
             <a
@@ -171,7 +194,22 @@ const LatestCollection = ({ collector }: any) => {
               rel="noopener noreferrer"
               className="hover:underline"
             >
-              <h1 className="text-[17px] break-all">{item.token.name}</h1>
+              {/* display text concat for mobile and desktop sizes (mobile 52 char desktop 60 char) */}
+              <h1 className="text-[17px] break-all md:hidden">
+                {`${
+                  item.token.name && item.token.name?.length > 52
+                    ? item.token.name?.slice(0, 52).concat('...')
+                    : item.token.name
+                }`}
+              </h1>
+
+              <h1 className="text-[17px] break-all hidden md:flex">
+                {`${
+                  item.token.name && item.token.name?.length > 60
+                    ? item.token.name?.slice(0, 60).concat('...')
+                    : item.token.name
+                }`}
+              </h1>
               <h1 className="text-[17px] break-all">
                 for {(parseFloat(item.price) / 1000000).toFixed(2)} XTZ
               </h1>

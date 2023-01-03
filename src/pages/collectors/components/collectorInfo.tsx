@@ -5,7 +5,7 @@ import React, { Fragment, useState } from 'react'
 // import Head from 'next/head'
 
 import FutureImage from 'next/future/image'
-// import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 import TwitterLogo from '../../app-icons/twitter-logo-128.png'
 
@@ -17,8 +17,6 @@ const ProfilePicture = ({
   walletAddress,
   onErrorFunction,
 }: any) => {
-  const [isLoaded, setIsLoaded] = useState(false)
-
   const loaderStyle =
     'bg-grey-500 after:block after:shadow-[0_0_150px_80px_rgba(254,254,254)] after:animate-[load_2.5s_infinite]' // after:animate-[load_1s_infinite]
 
@@ -36,7 +34,7 @@ const ProfilePicture = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <FutureImage
+        {/* <FutureImage
           src={profilePic}
           alt="Profile Photo"
           width={profilePicSize}
@@ -44,16 +42,16 @@ const ProfilePicture = ({
           className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
           onError={() => onErrorFunction()}
           onLoadingComplete={() => setVisibility('')}
-        />
-        {/* <LazyLoadImage
-          alt="Profile Photo"
+        /> */}
+        <LazyLoadImage
+          alt=""
           src={profilePic} // use normal <img> attributes as props
           height={profilePicSize}
           width={profilePicSize}
-					className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
+          className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
           afterLoad={() => setVisibility('')}
           onError={() => onErrorFunction()}
-        /> */}
+        />
       </a>
     </div>
   )
@@ -64,8 +62,6 @@ const ProfilePictureMobile = ({
   walletAddress,
   onErrorFunction,
 }: any) => {
-  const [isLoaded, setIsLoaded] = useState(false)
-
   const loaderStyle =
     'bg-grey-500 after:block after:shadow-[0_0_150px_80px_rgba(254,254,254)] after:animate-[load_2.5s_infinite]' // after:animate-[load_1s_infinite]
 
@@ -83,7 +79,7 @@ const ProfilePictureMobile = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <FutureImage
+        {/* <FutureImage
           src={profilePic}
           alt="Profile Photo"
           width={profilePicSize}
@@ -91,6 +87,15 @@ const ProfilePictureMobile = ({
           className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
           onError={() => onErrorFunction()}
           onLoadingComplete={() => setVisibility('')}
+        /> */}
+        <LazyLoadImage
+          alt=""
+          src={profilePic} // use normal <img> attributes as props
+          height={profilePicSize}
+          width={profilePicSize}
+          className={`w-[${profilePicSize}px] h-[${profilePicSize}px] object-cover`} // set invisible for debugging
+          afterLoad={() => setVisibility('')}
+          onError={() => onErrorFunction()}
         />
       </a>
     </div>
@@ -114,13 +119,13 @@ const CollectorInfo = ({ collector }: any) => {
   const rowDataStyle = ``
   const containerStyle = `flex items justify-center mt-10 text-2xl ${mainFont}`
 
-  const [rank] = useState(collector.rank)
-  const [profilePic, setProfilePic] = useState(collector.subject.logo)
-  const [nickname] = useState(collector.subject.alias)
-  const [tzDomain] = useState(collector.subject.tzdomain)
-  const [twitter] = useState(collector.subject.twitter)
-  const [walletAddress] = useState(collector.subject.address)
-  const [volume] = useState(collector.volume)
+  const [rank] = useState(collector?.rank)
+  const [profilePic, setProfilePic] = useState(collector?.subject.logo)
+  const [nickname] = useState(collector?.subject.alias)
+  const [tzDomain] = useState(collector?.subject.tzdomain)
+  const [twitter] = useState(collector?.subject.twitter)
+  const [walletAddress] = useState(collector?.subject.address)
+  const [volume] = useState(collector?.volume)
 
   // clear image link for images that can't load
   const clearImageLink = () => {
@@ -145,7 +150,7 @@ const CollectorInfo = ({ collector }: any) => {
           <h1 className={`${rowDataStyle} w-11 ml-4`}>{rank}.</h1>
           {profilePic !== null &&
           profilePic !== 'N/A' &&
-          profilePic.slice(0, 21) === 'https://pbs.twimg.com' ? (
+          profilePic?.slice(0, 21) === 'https://pbs.twimg.com' ? (
             <ProfilePictureMobile
               profilePic={profilePic}
               walletAddress={walletAddress}
@@ -164,18 +169,18 @@ const CollectorInfo = ({ collector }: any) => {
             rel="noopener noreferrer"
           >
             {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
-            {nickname !== null && nickname.trim().length > 0 ? (
+            {nickname !== null && nickname?.trim().length > 0 ? (
               <h1 className={`${rowDataStyle} hover:underline ml-2`}>
                 {nickname}
               </h1>
-            ) : tzDomain !== null && tzDomain.trim().length > 0 ? (
+            ) : tzDomain !== null && tzDomain?.trim().length > 0 ? (
               <h1 className={`${rowDataStyle} hover:underline ml-2`}>
                 {tzDomain}
               </h1>
             ) : (
               <h1
                 className={`${rowDataStyle} hover:underline ml-2`}
-              >{`${walletAddress.slice(0, 5)}...${walletAddress.slice(
+              >{`${walletAddress?.slice(0, 5)}...${walletAddress?.slice(
                 -5
               )}`}</h1>
             )}
@@ -206,7 +211,7 @@ const CollectorInfo = ({ collector }: any) => {
           <h1 className={`${rowDataStyle} w-11`}>{rank}.</h1>
           {profilePic !== null &&
           profilePic !== 'N/A' &&
-          profilePic.slice(0, 21) === 'https://pbs.twimg.com' ? (
+          profilePic?.slice(0, 21) === 'https://pbs.twimg.com' ? (
             <ProfilePicture
               profilePic={profilePic}
               walletAddress={walletAddress}
@@ -225,18 +230,18 @@ const CollectorInfo = ({ collector }: any) => {
             rel="noopener noreferrer"
           >
             {/* if have alias display alias (nickname), else if have tzdomain display tzdomain, else display shortened address */}
-            {nickname !== null && nickname.trim().length > 0 ? (
+            {nickname !== null && nickname?.trim().length > 0 ? (
               <h1 className={`${rowDataStyle} hover:underline ml-2 break-all`}>
                 {nickname}
               </h1>
-            ) : tzDomain !== null && tzDomain.trim().length > 0 ? (
+            ) : tzDomain !== null && tzDomain?.trim().length > 0 ? (
               <h1 className={`${rowDataStyle} hover:underline ml-2 break-all`}>
                 {tzDomain}
               </h1>
             ) : (
               <h1
                 className={`${rowDataStyle} hover:underline ml-2 break-all`}
-              >{`${walletAddress.slice(0, 5)}...${walletAddress.slice(
+              >{`${walletAddress?.slice(0, 5)}...${walletAddress?.slice(
                 -5
               )}`}</h1>
             )}

@@ -3,7 +3,6 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import Image from 'next/image'
 import FutureImage from 'next/future/image'
 
 import TagbitsLogo from '../index-images/Tagbits_Logo.png'
