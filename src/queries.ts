@@ -33,6 +33,15 @@ query {
 }
 `
 
+export const GET_LATEST_DAY_SOLDTOKENS = gql`
+query {
+	getLatestDaySoldTokens {
+		price
+		amount
+	}
+}
+`
+
 export default TEST_QUERY
 
 

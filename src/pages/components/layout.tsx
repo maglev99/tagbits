@@ -66,6 +66,15 @@ const Nav = () => {
               router.pathname === '/' ? activeLinkStyle : ''
             }`}
           >
+            Price
+          </h1>
+        </Link>
+        <Link href="/collectors">
+          <h1
+            className={`md:mr-12 cursor-pointer hover:underline mt-6 md:mt-0 ${
+              router.pathname === '/collectors' ? activeLinkStyle : ''
+            }`}
+          >
             Collectors
           </h1>
         </Link>

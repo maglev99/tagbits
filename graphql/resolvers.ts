@@ -92,6 +92,22 @@ const resolvers = {
       }))
       return data
     },
+    
+    getLatestDaySoldTokens: async () => {
+      const rawData: any = await prisma.$queryRaw`
+      SELECT  price, SUM(amount) as amount FROM "SoldToken"
+      WHERE "timeOfSale" >= TO_TIMESTAMP((CURRENT_DATE - 1 || ' ' || '00:00:00'), 'YYYY-MM-DD HH24:00:00')
+                AND "timeOfSale" < TO_TIMESTAMP((CURRENT_DATE || ' ' || '00:00:00'), 'YYYY-MM-DD HH24:00:00')
+      GROUP BY price 
+      ORDER BY price ASC
+      `
+      // convert rawData type to match gql schema
+      const data = rawData.map((item: any) => ({
+        price: Number(item.price.toString()),
+        amount: Number(item.amount.toString()),
+      }))
+      return data
+    },
   },
 }
 

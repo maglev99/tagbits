@@ -30,7 +30,7 @@ model TagRank {
 }
 
 model TagRankList {
-    id    String           @id @default(uuid())
+    id    String                @id @default(uuid())
     type  Type_TagRankList
     start DateTime
     end   DateTime

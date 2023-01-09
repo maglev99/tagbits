@@ -6,11 +6,18 @@ const typeDefs = gql`
     getLatestHourlyTagRankList: [TagRank]
     getLatest24HoursTagRankList: [TagRank]
     getLatestDayTagRankList: [TagRank]
+    
+    getLatestDaySoldTokens: [SoldTokens]
   }
 
   type TagRank {
     tags: [String]
     count: Int
+  }
+
+  type SoldTokens {
+    price: Float
+    amount: Int
   }
 `
 export default typeDefs
