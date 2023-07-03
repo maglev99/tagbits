@@ -43,7 +43,7 @@ const centerContainerOnly = 'max-w-[1200px] flex mx-auto'
 // const centerStyle = 'bg-blue-200 max-w-[1200px] flex justify-center mx-auto'
 
 const LastHourData = () => {
-  const { status, data, error } = useGQLQuery(
+  const { status, data, error }: { status: string, data: any, error: any } = useGQLQuery(
     ['latest_hourly_tagranklist'],
     GET_LATEST_HOURLY_TAGRANKLIST,
     {}

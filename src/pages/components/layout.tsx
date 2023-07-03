@@ -60,19 +60,19 @@ const Nav = () => {
         className={`${mainFont} text-xl mt-[10px] justify-self-end md:text-2xl md:ml-10 md:mt-[12px] pt-[6px] mr-2 
       md:inline-flex`}
       >
-        <Link href="/">
+        <Link href="/price">
           <h1
             className={`md:mr-12 cursor-pointer hover:underline ${
-              router.pathname === '/' ? activeLinkStyle : ''
+              router.pathname === '/price' ? activeLinkStyle : ''
             }`}
           >
             Price
           </h1>
         </Link>
-        <Link href="/collectors">
+        <Link href="/">
           <h1
             className={`md:mr-12 cursor-pointer hover:underline mt-6 md:mt-0 ${
-              router.pathname === '/collectors' ? activeLinkStyle : ''
+              router.pathname === '/' ? activeLinkStyle : ''
             }`}
           >
             Collectors
@@ -98,7 +98,7 @@ const Nav = () => {
 const Footer = () => (
   <>
     <footer className={`${centerStyle} mt-28 ${mainFont} text-2xl`}>
-      © 2022, Lands Software Inc.
+      © 2023, Tagbits.xyz.
     </footer>
     <div className={`${centerStyle} mt-6 pb-[100px] ${mainFont} text-lg`}>
       <div>
